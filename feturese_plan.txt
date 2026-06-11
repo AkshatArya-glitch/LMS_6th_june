@@ -1,0 +1,1051 @@
+EEPL LMS WEBSITE + ADMIN CMS FEATURE PLAN
+
+Goal:
+Build the website so the admin can update almost every frontend section without editing code. The public website should become API-driven, and the admin panel should work like a simple CMS for home page content, courses, webinars, trusted-by logos, testimonials, blogs, articles, certificates, settings, media, SEO, and LMS learning content.
+
+
+1. Current Project Review
+
+Current frontend:
+
+- Static HTML/CSS/JavaScript website.
+- Existing pages include home, courses, webinar, articles, certification, contact, and user dashboard.
+- Most visible content is currently stored in JavaScript files such as courses-data.js, webinar-data.js, articles-data.js, certification-data.js, and dashboard mock data.
+- Images and logos are stored inside Frontend/assets.
+
+Current backend:
+
+- PHP/MySQL API with JWT authentication.
+- Existing modules include students, admins, courses, modules, lessons, enrollments, progress, quizzes, answers, quiz attempts, and certificates.
+- Backend has a schema.sql file with core LMS tables.
+- Backend needs content management tables and APIs for website sections.
+
+Main requirement now:
+
+- Admin should be able to update the website from an admin dashboard.
+- No need to open code files for normal content changes.
+- Public website should fetch content from backend APIs.
+- Admin should manage homepage sections, course pages, webinars, trusted logos, testimonials, blogs, articles, certificates, contact info, menus, footer, images, SEO, and general settings.
+
+
+2. Main Admin Panel Modules
+
+Admin Dashboard:
+
+- Total students
+- Total courses
+- Total enrollments
+- Upcoming webinars
+- Latest blog/article count
+- Popular course views/clicks
+- Contact leads
+- Pending submissions
+- Revenue summary if payment gateway is added
+
+Website Content Manager:
+
+- Home page hero section
+- Popular courses section
+- Upcoming webinars section
+- Trusted by / partner logos section
+- Testimonials section
+- Course categories section
+- Articles/blog highlights
+- Certificate promotion section
+- About/institute highlights
+- Counters/statistics section
+- CTA sections
+- FAQ sections
+- Header menu
+- Footer content
+
+Course Manager:
+
+- Add/edit/delete courses
+- Course thumbnail/banner
+- Course category
+- Course price
+- Duration and level
+- Course description
+- Syllabus/modules/lessons
+- Popular/trending/new badges
+- Featured course toggle
+- Publish/draft status
+- SEO title and description
+
+Webinar Manager:
+
+- Add/edit/delete upcoming webinars
+- Webinar title, speaker, date, time, seats, category, banner
+- Registration enable/disable
+- Google Meet link or auto-create Meet link
+- Webinar recordings
+- Webinar testimonials
+- Webinar FAQ
+- Publish/draft status
+
+Blog and Article Manager:
+
+- Add/edit/delete blogs
+- Add/edit/delete articles
+- Categories and tags
+- Featured image
+- Author
+- Reading time
+- Publish/draft/scheduled status
+- SEO title, meta description, slug
+- Related articles
+
+Certificate Manager:
+
+- Manage certificate page content
+- Upload sample certificate image
+- Manage certificate templates
+- Generate certificates for students
+- Public certificate verification
+- Download certificate PDF
+
+Media Library:
+
+- Upload images, PDFs, documents, thumbnails, logos, certificate images
+- Search/filter media
+- Copy media URL
+- Replace images without changing frontend code
+- Optional YouTube video upload integration for course lessons
+
+Settings:
+
+- Website logo
+- Favicon
+- Institute name
+- Contact email
+- Phone number
+- WhatsApp number
+- Address
+- Social media links
+- Google Map embed/link
+- Header buttons
+- Footer links
+- SEO defaults
+- Theme colors if required
+- Maintenance mode
+- Analytics scripts
+- Payment settings
+- Google API settings
+
+
+3. Frontend Sections Admin Should Control
+
+Home Page:
+
+- Hero title
+- Hero highlighted text
+- Hero subtitle
+- Hero image/video
+- Primary CTA text and link
+- Secondary CTA text and link
+- Popular courses
+- Course categories
+- Upcoming webinars
+- Trusted by / partner logos
+- Testimonials
+- Statistics/counters
+- Why choose EEPL section
+- Articles/blog preview
+- Certificate/placement CTA
+- FAQ
+- Footer CTA
+
+Courses Page:
+
+- Page hero content
+- Course category tabs
+- Course cards
+- Popular courses
+- Featured courses
+- Study material cards
+- Course detail content
+- Prices
+- Badges
+- Course images
+- Course visibility/order
+
+Webinar Page:
+
+- Page hero
+- Upcoming webinars
+- Webinar registration cards
+- Speakers
+- Webinar recordings
+- Testimonials
+- FAQ
+- CTA section
+
+Articles/Blogs Page:
+
+- Article listing
+- Blog listing
+- Categories
+- Tags
+- Featured articles
+- Search/filter content
+- Article detail page
+- Related articles
+
+Certification Page:
+
+- Hero section
+- Sample certificate
+- Certificate benefits
+- Certificate categories
+- Certificate verification content
+- CTA blocks
+- FAQ
+
+Contact Page:
+
+- Hero content
+- Phone, email, WhatsApp, address
+- Map link/embed
+- Contact form fields
+- Office hours
+- Branch information
+
+User Dashboard:
+
+- Student profile
+- My courses
+- My enrollments
+- Batches
+- Assignments
+- Assessments
+- Certificates
+- Study materials
+- Attendance
+- Live classes
+- Messages
+- Payment history
+- Wishlist
+- Profile settings
+
+
+4. Required Database Tables
+
+Core CMS Tables:
+
+- pages
+  - id
+  - page_key: home, courses, webinar, articles, certification, contact
+  - title
+  - slug
+  - status: draft, published
+  - seo_title
+  - seo_description
+  - seo_keywords
+  - created_at
+  - updated_at
+
+- page_sections
+  - id
+  - page_id
+  - section_key: hero, popular_courses, upcoming_webinars, trusted_by, testimonials, faq, cta
+  - title
+  - subtitle
+  - content_json
+  - sort_order
+  - is_active
+  - created_at
+  - updated_at
+
+- media_assets
+  - id
+  - file_name
+  - file_path
+  - file_url
+  - file_type: image, video, pdf, document
+  - mime_type
+  - size
+  - alt_text
+  - uploaded_by
+  - created_at
+  - updated_at
+
+- site_settings
+  - id
+  - setting_key
+  - setting_value
+  - setting_type: text, image, json, boolean, number
+  - group_name: general, contact, seo, social, payment, google
+  - created_at
+  - updated_at
+
+- navigation_menus
+  - id
+  - location: header, footer, mobile
+  - label
+  - url
+  - parent_id
+  - sort_order
+  - is_active
+  - created_at
+  - updated_at
+
+Website Content Tables:
+
+- testimonials
+  - id
+  - name
+  - role
+  - company_or_course
+  - quote
+  - rating
+  - image_id
+  - is_featured
+  - sort_order
+  - status
+  - created_at
+  - updated_at
+
+- trusted_partners
+  - id
+  - name
+  - logo_id
+  - website_url
+  - sort_order
+  - is_active
+  - created_at
+  - updated_at
+
+- faqs
+  - id
+  - page_key
+  - question
+  - answer
+  - sort_order
+  - is_active
+  - created_at
+  - updated_at
+
+- counters
+  - id
+  - label
+  - value
+  - suffix
+  - icon
+  - sort_order
+  - is_active
+  - created_at
+  - updated_at
+
+Course CMS Tables:
+
+- course_categories
+  - id
+  - name
+  - slug
+  - description
+  - image_id
+  - sort_order
+  - is_active
+  - created_at
+  - updated_at
+
+- courses
+  - Keep existing table and add:
+  - slug
+  - short_description
+  - banner_image_id
+  - thumbnail_image_id
+  - level
+  - badge
+  - is_featured
+  - is_popular
+  - sort_order
+  - seo_title
+  - seo_description
+  - published_at
+
+- course_features
+  - id
+  - course_id
+  - title
+  - icon
+  - sort_order
+
+- course_faqs
+  - id
+  - course_id
+  - question
+  - answer
+  - sort_order
+
+Webinar Tables:
+
+- webinars
+  - id
+  - title
+  - slug
+  - description
+  - speaker_name
+  - speaker_role
+  - speaker_image_id
+  - banner_image_id
+  - category
+  - starts_at
+  - ends_at
+  - timezone
+  - seats_limit
+  - seats_left
+  - registration_enabled
+  - meet_url
+  - status: draft, published, completed, cancelled
+  - is_featured
+  - seo_title
+  - seo_description
+  - created_at
+  - updated_at
+
+- webinar_registrations
+  - id
+  - webinar_id
+  - student_id
+  - name
+  - email
+  - phone
+  - status
+  - registered_at
+
+- webinar_recordings
+  - id
+  - webinar_id
+  - title
+  - video_url
+  - thumbnail_id
+  - recorded_at
+  - is_active
+
+Blog/Article Tables:
+
+- content_categories
+  - id
+  - name
+  - slug
+  - type: blog, article, both
+  - sort_order
+  - is_active
+
+- posts
+  - id
+  - type: blog, article
+  - title
+  - slug
+  - excerpt
+  - content
+  - featured_image_id
+  - author_admin_id
+  - category_id
+  - tags_json
+  - reading_time
+  - status: draft, published, scheduled
+  - is_featured
+  - published_at
+  - seo_title
+  - seo_description
+  - created_at
+  - updated_at
+
+Certificate Tables:
+
+- certificate_templates
+  - id
+  - name
+  - template_image_id
+  - html_template
+  - is_default
+  - created_at
+  - updated_at
+
+- certificates
+  - Keep existing table and add:
+  - template_id
+  - student_name
+  - course_title
+  - pdf_url
+  - verification_url
+  - status
+
+Lead and Contact Tables:
+
+- contact_leads
+  - id
+  - name
+  - email
+  - phone
+  - subject
+  - message
+  - source_page
+  - status: new, contacted, converted, closed
+  - created_at
+  - updated_at
+
+
+5. Required Public APIs
+
+Website APIs:
+
+- GET /v1/site/settings
+- GET /v1/site/navigation
+- GET /v1/pages/{pageKey}
+- GET /v1/pages/{pageKey}/sections
+- GET /v1/home
+- GET /v1/home/hero
+- GET /v1/home/popular-courses
+- GET /v1/home/upcoming-webinars
+- GET /v1/home/trusted-by
+- GET /v1/home/testimonials
+- GET /v1/home/faqs
+
+Course APIs:
+
+- GET /v1/course-categories
+- GET /v1/courses
+- GET /v1/courses/featured
+- GET /v1/courses/popular
+- GET /v1/courses/{slug}
+- GET /v1/courses/{courseId}/modules
+- GET /v1/courses/{courseId}/faqs
+
+Webinar APIs:
+
+- GET /v1/webinars
+- GET /v1/webinars/upcoming
+- GET /v1/webinars/recordings
+- GET /v1/webinars/{slug}
+- POST /v1/webinars/{id}/register
+
+Blog/Article APIs:
+
+- GET /v1/posts
+- GET /v1/posts/featured
+- GET /v1/posts/{slug}
+- GET /v1/blogs
+- GET /v1/articles
+- GET /v1/content-categories
+
+Certificate APIs:
+
+- GET /v1/certification-page
+- GET /v1/certificates/verify/{certificateNumber}
+- GET /v1/certificates/{id}/download
+
+Contact APIs:
+
+- POST /v1/contact
+- GET /v1/contact-settings
+
+
+6. Required Admin APIs
+
+Admin Auth:
+
+- POST /v1/auth/admin-login
+- GET /v1/admin/profile
+- PATCH /v1/admin/profile
+
+Admin Dashboard:
+
+- GET /v1/admin/dashboard
+- GET /v1/admin/analytics
+
+Page and Section Management:
+
+- GET /v1/admin/pages
+- POST /v1/admin/pages
+- GET /v1/admin/pages/{id}
+- PATCH /v1/admin/pages/{id}
+- DELETE /v1/admin/pages/{id}
+- GET /v1/admin/pages/{id}/sections
+- POST /v1/admin/pages/{id}/sections
+- PATCH /v1/admin/sections/{id}
+- DELETE /v1/admin/sections/{id}
+- POST /v1/admin/sections/reorder
+
+Home Page Section APIs:
+
+- PATCH /v1/admin/home/hero
+- PATCH /v1/admin/home/popular-courses
+- PATCH /v1/admin/home/upcoming-webinars
+- PATCH /v1/admin/home/trusted-by
+- PATCH /v1/admin/home/testimonials
+- PATCH /v1/admin/home/faqs
+- PATCH /v1/admin/home/cta
+
+Media Library:
+
+- GET /v1/admin/media
+- POST /v1/admin/media/upload
+- PATCH /v1/admin/media/{id}
+- DELETE /v1/admin/media/{id}
+
+Courses:
+
+- GET /v1/admin/courses
+- POST /v1/admin/courses
+- GET /v1/admin/courses/{id}
+- PATCH /v1/admin/courses/{id}
+- DELETE /v1/admin/courses/{id}
+- POST /v1/admin/courses/reorder
+- PATCH /v1/admin/courses/{id}/publish
+- PATCH /v1/admin/courses/{id}/feature
+- PATCH /v1/admin/courses/{id}/popular
+
+Course Categories:
+
+- GET /v1/admin/course-categories
+- POST /v1/admin/course-categories
+- PATCH /v1/admin/course-categories/{id}
+- DELETE /v1/admin/course-categories/{id}
+- POST /v1/admin/course-categories/reorder
+
+Webinars:
+
+- GET /v1/admin/webinars
+- POST /v1/admin/webinars
+- GET /v1/admin/webinars/{id}
+- PATCH /v1/admin/webinars/{id}
+- DELETE /v1/admin/webinars/{id}
+- POST /v1/admin/webinars/reorder
+- PATCH /v1/admin/webinars/{id}/publish
+- GET /v1/admin/webinars/{id}/registrations
+
+Trusted By:
+
+- GET /v1/admin/trusted-partners
+- POST /v1/admin/trusted-partners
+- PATCH /v1/admin/trusted-partners/{id}
+- DELETE /v1/admin/trusted-partners/{id}
+- POST /v1/admin/trusted-partners/reorder
+
+Testimonials:
+
+- GET /v1/admin/testimonials
+- POST /v1/admin/testimonials
+- PATCH /v1/admin/testimonials/{id}
+- DELETE /v1/admin/testimonials/{id}
+- POST /v1/admin/testimonials/reorder
+
+Blogs and Articles:
+
+- GET /v1/admin/posts
+- POST /v1/admin/posts
+- GET /v1/admin/posts/{id}
+- PATCH /v1/admin/posts/{id}
+- DELETE /v1/admin/posts/{id}
+- PATCH /v1/admin/posts/{id}/publish
+- GET /v1/admin/content-categories
+- POST /v1/admin/content-categories
+- PATCH /v1/admin/content-categories/{id}
+- DELETE /v1/admin/content-categories/{id}
+
+Certificates:
+
+- GET /v1/admin/certificate-templates
+- POST /v1/admin/certificate-templates
+- PATCH /v1/admin/certificate-templates/{id}
+- DELETE /v1/admin/certificate-templates/{id}
+- POST /v1/admin/certificates/generate
+- GET /v1/admin/certificates
+
+Settings:
+
+- GET /v1/admin/settings
+- PATCH /v1/admin/settings
+- GET /v1/admin/navigation
+- POST /v1/admin/navigation
+- PATCH /v1/admin/navigation/{id}
+- DELETE /v1/admin/navigation/{id}
+- POST /v1/admin/navigation/reorder
+
+Contact Leads:
+
+- GET /v1/admin/contact-leads
+- GET /v1/admin/contact-leads/{id}
+- PATCH /v1/admin/contact-leads/{id}
+- DELETE /v1/admin/contact-leads/{id}
+
+
+7. Admin Frontend Pages To Build
+
+Admin Login:
+
+- Email/password login
+- JWT token storage
+- Logout
+
+Admin Layout:
+
+- Sidebar navigation
+- Top bar
+- Profile menu
+- Search
+- Notifications
+
+Admin Dashboard:
+
+- Quick stats
+- Recent leads
+- Recent enrollments
+- Upcoming webinars
+- Popular courses
+
+Home Page Editor:
+
+- Hero editor
+- Popular courses selector
+- Upcoming webinars selector
+- Trusted logos manager
+- Testimonials selector
+- FAQ editor
+- CTA editor
+
+Course Manager:
+
+- Course list
+- Add/edit course form
+- Course category manager
+- Image selector
+- Featured/popular toggles
+- Drag-and-drop sorting
+- Publish/draft control
+
+Webinar Manager:
+
+- Webinar list
+- Add/edit webinar form
+- Registration list
+- Recording manager
+- Google Meet link field
+
+Blog/Article Manager:
+
+- Post list
+- Rich text editor
+- Category/tag manager
+- Featured image selector
+- SEO fields
+- Publish/schedule controls
+
+Media Library:
+
+- Upload area
+- Image grid
+- Search/filter
+- Select image modal
+- Alt text editor
+
+Testimonials Manager:
+
+- Add/edit testimonial
+- Rating
+- Student/company image
+- Featured toggle
+- Sort order
+
+Trusted By Manager:
+
+- Add/edit partner
+- Logo upload
+- Website URL
+- Sort order
+
+Certificate Manager:
+
+- Certificate page content
+- Template upload/editor
+- Generate certificate
+- Verify certificate list
+
+Settings:
+
+- General settings
+- Contact settings
+- Social links
+- SEO defaults
+- Header/footer navigation
+- API keys/settings
+
+
+8. Website Frontend Changes Required
+
+- Replace hard-coded JavaScript data files with API calls.
+- Keep fallback static content only for development.
+- Add loading states for public sections.
+- Add empty states if admin has not published content.
+- Use slugs for course, webinar, blog, and article detail pages.
+- Add reusable frontend render functions for:
+  - hero sections
+  - cards
+  - testimonials
+  - FAQs
+  - partner logos
+  - course cards
+  - blog/article cards
+- Add SEO meta tag updates from API data.
+- Add image alt text from media library.
+
+
+9. YouTube Video Storage For Course Lessons
+
+Requirement:
+
+- Admin can upload or attach course videos.
+- Videos can be stored in YouTube and shown inside lessons.
+
+Important note:
+
+- YouTube does not provide a true private folder feature through API.
+- Use YouTube playlists as course folders, or keep grouping inside LMS database.
+- Private YouTube videos are difficult for many students because each viewer may need Google account permission.
+- For LMS access, unlisted videos plus enrollment checks are easier.
+- For stronger security, use Vimeo, Bunny Stream, Cloudflare Stream, or signed HLS storage.
+
+Required Google/YouTube APIs:
+
+- YouTube Data API v3
+- OAuth 2.0 Client ID
+- OAuth consent screen
+- Scopes:
+  - https://www.googleapis.com/auth/youtube.upload
+  - https://www.googleapis.com/auth/youtube
+  - https://www.googleapis.com/auth/youtube.readonly
+
+Admin APIs:
+
+- POST /v1/admin/media/youtube/upload
+- GET /v1/admin/media/youtube/status/{id}
+- POST /v1/admin/courses/{courseId}/youtube-playlist
+- POST /v1/admin/lessons/{lessonId}/video
+
+
+10. Google Meet Live Classes
+
+Requirement:
+
+- Admin can schedule live classes.
+- Students can see upcoming classes and join from dashboard.
+- Google Meet links can be created or stored.
+
+Recommended approach:
+
+- Use Google Calendar API to create events with Google Meet conference links.
+- Store the returned Meet URL in the LMS.
+- Use Google Meet API only if advanced meeting-space or conference-record features are needed.
+
+Required Google APIs:
+
+- Google Calendar API
+- Optional Google Meet REST API
+- OAuth 2.0 Client ID
+- OAuth consent screen
+- Scopes:
+  - https://www.googleapis.com/auth/calendar.events.owned
+  - or https://www.googleapis.com/auth/calendar
+
+Live class tables:
+
+- batches
+- live_classes
+- live_class_attendance
+
+Admin APIs:
+
+- POST /v1/admin/live-classes
+- PATCH /v1/admin/live-classes/{id}
+- DELETE /v1/admin/live-classes/{id}
+- POST /v1/admin/live-classes/{id}/create-meet
+- POST /v1/admin/live-classes/{id}/attendance
+
+Student APIs:
+
+- GET /v1/live-classes/upcoming
+- GET /v1/live-classes/{id}
+- POST /v1/live-classes/{id}/join
+
+
+11. Third Party APIs Required
+
+Google APIs:
+
+- YouTube Data API v3 for video upload and playlist management.
+- Google Calendar API for Google Meet link creation.
+- Google Meet API optionally for advanced meeting management.
+
+Payment APIs:
+
+- Razorpay recommended for course payments in India.
+- Alternatives: PhonePe, Cashfree.
+
+Email/SMS/WhatsApp:
+
+- Email: SendGrid, Amazon SES, Mailgun, or SMTP.
+- SMS: MSG91, Textlocal, Fast2SMS, or Twilio.
+- WhatsApp: WhatsApp Business Cloud API or approved BSP.
+
+Analytics:
+
+- Google Analytics 4
+- Google Tag Manager
+- Meta Pixel if running ads
+
+Maps:
+
+- Google Maps embed link is enough for contact page.
+- Google Maps API only needed for advanced map/search features.
+
+
+12. Environment Variables Needed
+
+Backend:
+
+- DB_HOST
+- DB_DATABASE
+- DB_USERNAME
+- DB_PASSWORD
+- JWT_SECRET
+- JWT_TTL
+- APP_URL
+- FRONTEND_URL
+
+Google:
+
+- GOOGLE_CLIENT_ID
+- GOOGLE_CLIENT_SECRET
+- GOOGLE_REDIRECT_URI
+- GOOGLE_CALENDAR_ID
+- GOOGLE_MEET_TIMEZONE=Asia/Kolkata
+- YOUTUBE_CHANNEL_ID
+- YOUTUBE_DEFAULT_PRIVACY_STATUS=private
+
+Payment:
+
+- RAZORPAY_KEY_ID
+- RAZORPAY_KEY_SECRET
+- RAZORPAY_WEBHOOK_SECRET
+
+Email/SMS:
+
+- MAIL_PROVIDER
+- MAIL_API_KEY
+- SMS_PROVIDER
+- SMS_API_KEY
+- WHATSAPP_ACCESS_TOKEN
+
+Frontend:
+
+- API_BASE_URL
+- SITE_NAME
+
+
+13. Implementation Priority
+
+Phase 1: Backend Cleanup
+
+1. Fix existing backend route issue.
+2. Standardize API response format.
+3. Add admin permission middleware.
+4. Add migration/update SQL for CMS tables.
+
+Phase 2: Admin Foundation
+
+1. Build admin login page.
+2. Build admin layout/sidebar.
+3. Build admin dashboard.
+4. Build media library upload and selection.
+5. Build settings manager.
+
+Phase 3: Website CMS
+
+1. Build page_sections table and APIs.
+2. Build home page editor.
+3. Build trusted-by manager.
+4. Build testimonials manager.
+5. Build FAQ manager.
+6. Connect home page frontend to APIs.
+
+Phase 4: Course and Webinar CMS
+
+1. Build course category manager.
+2. Upgrade course manager.
+3. Connect courses page to APIs.
+4. Build webinar manager.
+5. Connect webinar page to APIs.
+
+Phase 5: Blogs, Articles, Certificates
+
+1. Build blog/article manager.
+2. Connect article pages to APIs.
+3. Build certificate template manager.
+4. Add certificate verification/download.
+
+Phase 6: LMS Advanced Features
+
+1. Add YouTube upload integration.
+2. Add Google Meet live class scheduling.
+3. Add payments.
+4. Add notifications.
+5. Add assignments, materials, attendance, and messages.
+
+
+14. Security And Admin Rules
+
+- Only authenticated admins can access admin APIs.
+- Use role permissions: super_admin, admin, teacher, content_manager.
+- Keep API keys and Google tokens only in backend.
+- Never expose secrets in frontend JavaScript.
+- Validate image/file uploads.
+- Restrict upload file types and file size.
+- Add slug uniqueness checks.
+- Add status field for draft/published content.
+- Keep created_by and updated_by fields for admin activity.
+- Add soft delete for important content.
+- Add audit log for critical changes.
+- Use HTTPS in production.
+
+
+15. Suggested Admin Roles
+
+Super Admin:
+
+- Can manage everything, including settings and API keys.
+
+Admin:
+
+- Can manage students, courses, webinars, blogs, certificates, leads.
+
+Teacher:
+
+- Can manage assigned courses, lessons, live classes, assignments, quizzes.
+
+Content Manager:
+
+- Can manage home page, blogs, articles, testimonials, trusted logos, FAQs, media.
+
+Support:
+
+- Can manage contact leads and student support messages only.
+
+
+16. Final Website Behavior
+
+After implementation:
+
+- Admin logs into admin panel.
+- Admin updates hero section title, subtitle, buttons, and image.
+- Admin selects which courses appear in Popular Courses.
+- Admin adds or edits upcoming webinars.
+- Admin uploads trusted-by logos.
+- Admin adds testimonials.
+- Admin creates courses, blogs, articles, and certificate content.
+- Admin updates contact details, social links, footer, logo, favicon, SEO, and settings.
+- Public frontend automatically shows updated content through APIs.
+- Students use dashboard for learning, live classes, certificates, payments, and progress.

@@ -1,0 +1,381 @@
+You are working on my existing LMS website.
+
+The previous changes are working now, so do not disturb them.
+
+The website already has:
+
+* Frontend Home Page
+* Admin Panel
+* Trainer Panel
+* User Panel
+* Existing login/register/session system
+* Existing course management
+* Existing webinar management
+* Existing testimonial section
+* Existing home page popup section
+* Existing database connection
+* Existing upload system
+
+Very important:
+Do not redesign the website.
+Do not rebuild the project.
+Do not change any existing working functionality.
+Do not change the layout, colors, spacing, or design unless required for the requested fixes.
+Only implement the exact changes listed below.
+
+==================================================
+TASK 1: FIX TESTIMONIAL LOGO/IMAGE NOT SHOWING ON HOME PAGE
+===========================================================
+
+Current problem:
+The logo/image in the testimonials section on the Home Page is not showing.
+
+Required fix:
+
+* Inspect the testimonial section on the Home Page.
+* Inspect the testimonial admin/backend logic.
+* Fix the broken image/logo path issue.
+* Make sure uploaded testimonial images display correctly on the Home Page.
+* Fix relative paths, upload paths, database image path, and frontend rendering if needed.
+* Do not hardcode images.
+* Do not use dummy images unless no image exists.
+
+Also add:
+A proper profile picture section for testimonials.
+
+Admin Panel testimonial form should include:
+
+* Name
+* Designation/Role
+* Testimonial message/review
+* Rating if already supported
+* Profile picture upload
+* Status
+* Edit/Delete functionality should continue working
+
+Profile picture requirements:
+
+* Admin should be able to upload a profile picture for each testimonial.
+* Supported image formats:
+
+  * JPG
+  * JPEG
+  * PNG
+  * WEBP
+* Store uploaded images in a safe folder such as:
+  uploads/testimonials/
+* Store only the relative path in the database.
+* Show current profile picture in edit form.
+* Show preview before saving if possible.
+* If no profile picture is uploaded, show a clean default avatar or initials, without broken image icons.
+
+Frontend testimonial requirements:
+
+* Display testimonial profile picture properly.
+* Image should be circular or match the existing testimonial design.
+* Use:
+  object-fit: cover;
+  object-position: center;
+* Do not crop the face badly.
+* Do not stretch the image.
+* Keep the existing testimonial card design unchanged.
+
+==================================================
+TASK 2: ADD STATUS FIELD WHEN ADDING/EDITING WEBINAR
+====================================================
+
+Current requirement:
+When adding a webinar from Admin Panel backend, there should be a status option.
+
+Admin webinar form should include:
+
+* Webinar title
+* Description
+* Date/time
+* Trainer/speaker if already supported
+* Image if already supported
+* Link/button if already supported
+* Status field
+
+Status options:
+
+* Active
+* Inactive
+* Draft
+
+Expected behavior:
+
+* When Admin adds a webinar, they must be able to select status.
+* When Admin edits a webinar, they must be able to update status.
+* Active webinars should show on the frontend webinar page.
+* Inactive or Draft webinars should not show on the public frontend webinar page unless the current website already has a different rule.
+* Admin should still see all webinars in the backend table.
+* Backend table should display status clearly using labels/badges.
+
+Database:
+
+* If webinar table already has a status column, use it.
+* If not, add a safe migration:
+  status VARCHAR(20) DEFAULT 'Active'
+* Make sure existing webinars do not disappear after migration.
+* Existing webinars should default to Active unless current logic says otherwise.
+
+Important:
+Do not break current webinar add/edit/delete functionality.
+Do not change the webinar page design.
+Only add status support and fix the query if required.
+
+==================================================
+TASK 3: ADD COURSE DISCOUNT FEATURE WITH FULL CRUD SUPPORT
+==========================================================
+
+Current requirement:
+Admin should be able to offer discounts while adding or editing a course.
+
+Add discount support to course management.
+
+Admin course add/edit form should include:
+
+* Original price
+* Discount type
+* Discount value
+* Final price / discounted price preview
+* Discount status
+
+Discount type options:
+
+* No Discount
+* Percentage Discount
+* Fixed Amount Discount
+
+Example behavior:
+
+* If course price is ₹5000 and discount type is Percentage with value 20, final price should be ₹4000.
+* If course price is ₹5000 and discount type is Fixed Amount with value 1000, final price should be ₹4000.
+* If discount type is No Discount, final price should be same as original price.
+
+CRUD requirements:
+Admin should be able to:
+
+* Add course with discount
+* View course discount in course list
+* Edit discount
+* Remove discount
+* Delete course without breaking discount data
+* Update discount status
+
+Validation:
+
+* Discount value cannot be negative.
+* Percentage discount cannot be more than 100.
+* Fixed discount cannot be greater than original price.
+* Final price cannot become negative.
+* If invalid discount is entered, show a proper error message.
+
+Database:
+If course table already has discount fields, use them.
+If not, add safe fields such as:
+
+* price DECIMAL(10,2)
+* discount_type VARCHAR(30) DEFAULT 'none'
+* discount_value DECIMAL(10,2) DEFAULT 0
+* discounted_price DECIMAL(10,2) NULL
+* discount_status TINYINT(1) DEFAULT 0
+
+Frontend course display:
+
+* Show original price with strike-through if discount is active.
+* Show discounted price clearly.
+* Show discount badge if discount is active.
+  Example:
+  “20% OFF”
+  or
+  “₹1000 OFF”
+* If no discount is active, show only the normal price.
+* Apply this to course cards wherever courses are displayed:
+
+  * Popular Courses
+  * Course Listing
+  * Course Details if available
+* Keep the existing card design unchanged.
+
+Important:
+Do not break popular courses logic.
+Do not break course add/edit/delete.
+Do not remove existing course fields.
+Do not replace current course design.
+
+==================================================
+TASK 4: ADD ADMIN PANEL CRUD FOR HOME PAGE POPUP SECTION
+========================================================
+
+Current requirement:
+The existing website has a popup section on the Home Page.
+Admin Panel should have a proper section to manage this popup using CRUD.
+
+Create a section in Admin Panel:
+“Home Popup Management”
+
+Admin should be able to:
+
+* Add popup
+* Edit popup
+* Delete popup
+* Enable/disable popup
+* View popup list
+* Set popup title
+* Set popup description/message
+* Upload popup image if needed
+* Add button text
+* Add button link
+* Set display status
+* Set start date and end date if possible
+* Select popup type if useful
+
+Suggested popup fields:
+
+* id
+* title
+* message/description
+* image
+* button_text
+* button_link
+* status
+* start_date nullable
+* end_date nullable
+* created_at
+* updated_at
+
+Popup status options:
+
+* Active
+* Inactive
+* Draft
+
+Expected frontend behavior:
+
+* Only Active popup should show on the Home Page.
+* If start date/end date are used, popup should only show within the valid date range.
+* If no active popup exists, no popup should appear.
+* Popup should not show broken content.
+* Popup image should load correctly if uploaded.
+* Popup should have a close button.
+* Popup should not block the website permanently.
+* Keep the existing popup design if already present.
+* Do not redesign the popup unless needed to connect it to admin CRUD.
+
+Admin UI requirements:
+
+* Add a sidebar/menu link for Home Popup Management if missing.
+* Use the existing Admin Panel design style.
+* Add forms, table, edit, delete, status badges.
+* Show image preview before saving if possible.
+* Show current popup image while editing.
+* Delete should ask for confirmation.
+
+Upload requirements:
+
+* Store popup images in:
+  uploads/popups/
+* Allow only JPG, JPEG, PNG, WEBP.
+* Validate file type and size.
+* Store relative image path in database.
+* Avoid broken image paths.
+
+==================================================
+GENERAL RULES
+=============
+
+Before editing:
+
+* Inspect the existing file structure.
+* Identify the correct files for:
+
+  * Testimonial admin form
+  * Testimonial frontend section
+  * Webinar admin add/edit
+  * Webinar frontend page
+  * Course admin add/edit/list
+  * Course frontend display
+  * Popular Courses section
+  * Home Page popup section
+  * Admin sidebar/menu
+  * Database connection
+  * Upload handling
+
+Do not:
+
+* Break login/session system.
+* Break Admin Panel.
+* Break Trainer Panel.
+* Break User Panel.
+* Break existing Home Page sections.
+* Break existing course CRUD.
+* Break existing webinar CRUD.
+* Break previous fixes.
+* Change unrelated files unnecessarily.
+* Hardcode frontend data.
+* Use dummy data where database data exists.
+* Delete old database records.
+* Rename important files unnecessarily.
+
+Use:
+
+* Existing project coding style.
+* Existing database connection.
+* Existing upload helpers if available.
+* Existing UI components.
+* Existing dashboard styling.
+* Prepared statements or the project’s existing safe query method.
+* Safe migrations only when needed.
+
+==================================================
+TESTING CHECKLIST
+=================
+
+After implementation, verify:
+
+Testimonials:
+
+* Testimonial profile image uploads successfully.
+* Testimonial image path saves correctly.
+* Testimonial profile picture shows on Home Page.
+* No broken image icon appears.
+* Testimonial edit page shows current image.
+* Testimonial design remains unchanged.
+
+Webinars:
+
+* Admin can select webinar status while adding.
+* Admin can update webinar status while editing.
+* Active webinars show on frontend.
+* Inactive/Draft webinars do not show publicly.
+* Admin can still view all webinars.
+* Webinar CRUD still works.
+
+Courses:
+
+* Admin can add course with discount.
+* Admin can edit course discount.
+* Admin can remove discount.
+* Course list shows discount information.
+* Frontend course cards show original and discounted price correctly.
+* Popular Courses section still works.
+* Course CRUD still works.
+* Invalid discounts are rejected.
+
+Home Popup:
+
+* Admin can add popup.
+* Admin can edit popup.
+* Admin can delete popup.
+* Admin can activate/deactivate popup.
+* Active popup shows on Home Page.
+* Inactive popup does not show.
+* Popup close button works.
+* Popup image loads correctly.
+* No broken layout or console errors.
+
+Final result:
+All requested changes should work smoothly while keeping the current LMS website design and all existing functions unchanged.
+

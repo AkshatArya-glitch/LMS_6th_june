@@ -1,0 +1,7 @@
+RewriteEngine On
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
+# If the requested filename exists, serve it directly
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+# Otherwise route everything to public/index.php
+RewriteRule ^(.*)$ public/index.php [QSA,L]

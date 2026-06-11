@@ -1,0 +1,154 @@
+.media-gallery-page {
+  background: #fff;
+}
+
+.mg-hero {
+  padding: 8.5rem 0 3rem;
+  background: #fafafa;
+  border-bottom: 1px solid var(--gray-200);
+}
+
+.mg-hero h1 {
+  margin: 0;
+  color: var(--dark-900);
+  font-size: clamp(2rem, 4vw, 3.4rem);
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.mg-hero p {
+  max-width: 680px;
+  margin: 0.9rem 0 0;
+  color: var(--gray-600);
+  line-height: 1.7;
+}
+
+.mg-section {
+  background: #fff;
+}
+
+.mg-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 1rem;
+}
+
+.mg-card {
+  min-width: 0;
+  border: 1px solid var(--gray-200);
+  border-radius: 8px;
+  background: #fff;
+  overflow: hidden;
+  box-shadow: var(--shadow-sm);
+}
+
+.mg-card button {
+  width: 100%;
+  display: block;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  cursor: zoom-in;
+}
+
+.mg-card img,
+.mg-card video {
+  width: 100%;
+  aspect-ratio: 4 / 3;
+  display: block;
+  object-fit: cover;
+  object-position: center;
+  background: var(--gray-100);
+}
+
+.mg-card-body {
+  padding: 0.85rem;
+}
+
+.mg-card-body strong {
+  display: block;
+  color: var(--dark-900);
+  font-size: 0.92rem;
+  line-height: 1.35;
+}
+
+.mg-card-body small {
+  display: block;
+  margin-top: 0.35rem;
+  color: var(--gray-500);
+  font-size: 0.75rem;
+}
+
+.mg-empty {
+  grid-column: 1 / -1;
+  padding: 2rem;
+  border: 1px dashed var(--gray-200);
+  border-radius: 8px;
+  color: var(--gray-500);
+  background: #fafafa;
+  text-align: center;
+}
+
+.mg-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+  background: rgba(0, 0, 0, 0.82);
+}
+
+.mg-lightbox[hidden] {
+  display: none;
+}
+
+.mg-lightbox img,
+.mg-lightbox video {
+  max-width: min(100%, 1100px);
+  max-height: 82vh;
+  object-fit: contain;
+  background: #fff;
+}
+
+.mg-lightbox p {
+  margin: 0.8rem 0 0;
+  color: #fff;
+  font-weight: 700;
+}
+
+.mg-lightbox-close {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 50%;
+  color: #fff;
+  background: rgba(255, 255, 255, 0.16);
+  font-size: 1.8rem;
+  cursor: pointer;
+}
+
+@media (max-width: 1024px) {
+  .mg-grid {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 720px) {
+  .mg-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .mg-hero {
+    padding-top: 7rem;
+  }
+}
+
+@media (max-width: 460px) {
+  .mg-grid {
+    grid-template-columns: 1fr;
+  }
+}

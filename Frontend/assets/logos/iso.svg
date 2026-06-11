@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="80" viewBox="0 0 220 80" role="img" aria-labelledby="title desc">
+  <title id="title">ISO 9001:2015</title>
+  <desc id="desc">ISO 9001:2015 logo placeholder</desc>
+  <rect width="220" height="80" rx="10" fill="#ffffff"/>
+  <circle cx="46" cy="40" r="24" fill="#111827"/>
+  <circle cx="46" cy="40" r="17" fill="#ffffff"/>
+  <path d="M38 39l6 6 12-14 5 5-17 19-11-11z" fill="#ef3340"/>
+  <text x="84" y="37" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="900" fill="#111827">ISO</text>
+  <text x="84" y="58" font-family="Inter, Arial, sans-serif" font-size="17" font-weight="800" fill="#111827">9001:2015</text>
+</svg>

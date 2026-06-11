@@ -1,0 +1,350 @@
+You are working on my existing LMS website. The site already has a frontend website and three dashboards/panels:
+
+1. Admin Panel
+2. Trainer Panel
+3. User Panel
+
+The Admin Panel already controls some frontend sections of the LMS website. Do not redesign the full website. Do not remove or break any existing functionality, pages, routes, database tables, login system, dashboard layout, trainer panel, user panel, or current admin features.
+
+Your job is to carefully fix and improve the existing frontend-control features from the Admin Panel.
+
+Main issues to fix:
+
+1. Hero Section Image Not Updating
+2. Hero Section Requires Image URL Instead of Upload
+3. Webinar and Article Images/Logos Are Getting Cut Off
+4. Newly Added Courses Are Not Appearing in Popular Courses Section
+5. Trusted Partners Logos Only Show Color on Hover
+
+Please inspect the current project structure first, understand how the existing frontend sections are connected to the Admin Panel, then apply the changes in the safest way possible.
+
+==================================================
+TASK 1: FIX HERO SECTION IMAGE UPDATE
+=====================================
+
+Current problem:
+
+* The hero image is not changing properly from the Admin Panel.
+* The Admin Panel currently asks for an image URL.
+* I do not want the Admin to paste an image URL.
+* I want the Admin to upload an image directly from the computer.
+* Example: If I download an image and upload it from the Admin Panel, that image should immediately appear in the frontend hero section.
+
+Required implementation:
+
+* Replace the hero image URL input field with a proper file upload input.
+* The input should allow image files only.
+* Supported formats should include:
+
+  * JPG
+  * JPEG
+  * PNG
+  * WEBP
+* Add backend handling for uploading the image.
+* Store uploaded images inside a proper uploads folder, for example:
+
+  * /uploads/hero/
+* If the folder does not exist, create it safely.
+* Rename uploaded files with unique names to avoid conflicts.
+  Example:
+  hero_1712345678_randomid.webp
+* Store only the relative image path in the database or existing settings system.
+  Example:
+  uploads/hero/hero_1712345678_randomid.jpg
+* Update the frontend hero section so it loads the saved uploaded image path.
+* The hero image should change immediately after saving from the Admin Panel.
+* If the website has caching or old image preview issues, fix it properly.
+* Do not hardcode the hero image.
+* Do not keep using the old image URL logic unless it is needed for backward compatibility.
+* If existing database values contain old image URLs, handle them safely so old data does not break the site.
+
+Admin Panel UI requirements:
+
+* Show an image preview after selecting the file.
+* Show the currently active hero image in the Admin Panel.
+* Add a clear label:
+  “Upload Hero Image”
+* Add helper text:
+  “Recommended size: 1200x600px or larger”
+* Keep the Admin Panel design consistent with the current UI.
+* Do not make the upload field look basic or broken.
+
+Validation requirements:
+
+* Reject non-image files.
+* Reject files that are too large.
+* Use a reasonable max file size such as 2MB or 5MB.
+* Show a proper error message if upload fails.
+* Show a success message after the hero image is updated.
+* Make sure the uploaded image appears correctly on the frontend.
+
+Security requirements:
+
+* Do not allow PHP, JS, HTML, SVG scripts, or executable files to be uploaded.
+* Validate MIME type server-side.
+* Sanitize file names.
+* Use a generated safe filename instead of trusting the original filename.
+
+==================================================
+TASK 2: FIX WEBINAR AND ARTICLE IMAGE CUT-OFF ISSUE
+===================================================
+
+Current problem:
+
+* When I upload images or logos in the Webinar section and Article section, the images are getting cut off.
+* The uploaded images should appear cleanly and professionally.
+* Logos should not be cropped badly.
+* Article thumbnails should not look stretched or cut in an ugly way.
+
+Required implementation:
+
+* Inspect the CSS and HTML used for Webinar cards and Article cards.
+* Fix the image container styling.
+* Images should be responsive.
+* Use correct CSS properties depending on the image type.
+
+For normal thumbnail/banner images:
+
+* Use proper fixed card image height if needed.
+* Use:
+  object-fit: cover;
+  object-position: center;
+* Make sure the image fills the card area nicely without breaking the card.
+
+For logos:
+
+* Logos should not be cut off.
+* Use:
+  object-fit: contain;
+  object-position: center;
+  max-width: 100%;
+  max-height: 100%;
+* Add padding inside logo containers if needed.
+* Do not stretch logos.
+* Do not crop important logo parts.
+
+Frontend requirements:
+
+* Webinar images should look clean on desktop, tablet, and mobile.
+* Article images should look clean on desktop, tablet, and mobile.
+* Image cards should remain aligned.
+* Existing card design should not break.
+* Do not change the entire visual design unless necessary.
+* Only fix the image display issue professionally.
+
+Admin Panel requirements:
+
+* Uploaded webinar/article images should preview correctly before saving.
+* Existing uploaded images should still display.
+* If any old image paths exist, keep them working.
+
+==================================================
+TASK 3: NEW COURSES SHOULD APPEAR IN POPULAR COURSES SECTION
+============================================================
+
+Current problem:
+
+* When I add a new course from the Admin Panel, the course gets added but does not appear in the Popular Courses section.
+* There is already a Popular Courses section on the frontend.
+* The Admin Panel has or should have a toggle/control for whether a course is popular.
+* If I toggle a course as popular from Admin Panel, it should appear in the Popular Courses section.
+
+Required implementation:
+
+* Inspect the existing course creation and course listing logic.
+* Find where courses are stored.
+* Find how Popular Courses are currently fetched/displayed.
+* Add or fix the “popular course” logic.
+
+Expected behavior:
+
+* When Admin adds a new course, the course should be saved normally.
+* There should be a toggle, checkbox, or switch in the Admin Panel:
+  “Show in Popular Courses”
+* If this toggle is ON, the course should appear in the frontend Popular Courses section.
+* If this toggle is OFF, the course should not appear in Popular Courses.
+* The course should still appear in the normal courses list if the site already has one.
+* Admin should also be able to edit an existing course and turn Popular ON/OFF.
+* The Popular Courses section should dynamically fetch courses marked as popular.
+* Do not use static/dummy popular courses if database courses exist.
+* Newly added popular courses should appear without manually editing frontend code.
+
+Database/backend requirements:
+
+* If the courses table already has a field for popular courses, use it.
+  Example:
+  is_popular
+  popular
+  featured
+* If no such field exists, add a safe migration or SQL update:
+  is_popular TINYINT(1) DEFAULT 0
+* Make sure create course and update course logic saves this value.
+* Make sure the frontend query filters popular courses correctly.
+  Example:
+  WHERE is_popular = 1
+* Keep existing course fields working:
+
+  * title
+  * description
+  * image
+  * price
+  * category
+  * trainer
+  * duration
+  * status
+  * any existing fields in the project
+
+Frontend requirements:
+
+* Popular Courses section should display the course image, title, short description, price/free label, rating if available, trainer if available, and button if already part of the design.
+* Keep the existing Popular Courses design.
+* Do not redesign the whole section.
+* If no popular courses exist, show a clean fallback message or hide the section depending on the current site style.
+* Make sure the section is responsive.
+
+==================================================
+TASK 4: TRUSTED PARTNERS LOGOS SHOULD ALWAYS SHOW COLOR
+=======================================================
+
+Current problem:
+
+* Trusted Partners logos are only showing their original colors when I hover over them.
+* By default, they look grayscale/black-white/faded.
+* I want the logos to always show their original colors.
+* Hover effect can remain, but it should not be the only time color appears.
+
+Required implementation:
+
+* Inspect the CSS for Trusted Partners logo section.
+* Remove the default grayscale filter.
+* Make logos display in full color by default.
+* Do not apply:
+  filter: grayscale(100%);
+  opacity too low;
+  brightness/color filters that remove original color.
+* On hover, you can keep a small professional effect like:
+  transform: scale(1.05);
+  opacity: 1;
+* The logo color should remain visible before hover and after hover.
+
+Required final CSS behavior:
+
+* Default state: full color logo.
+* Hover state: full color logo with optional slight zoom/shadow.
+* Do not crop or stretch partner logos.
+* Use object-fit: contain for partner logos.
+
+==================================================
+TASK 5: GENERAL IMAGE UPLOAD SYSTEM IMPROVEMENT
+===============================================
+
+Apply upload logic consistently where needed:
+
+* Hero image
+* Course images
+* Webinar images
+* Article images
+* Partner logos if applicable
+
+Requirements:
+
+* Use file upload instead of URL wherever the Admin is expected to upload local images.
+* Keep existing URL-based images working only if needed for old records.
+* Use safe upload folders:
+  uploads/hero/
+  uploads/courses/
+  uploads/webinars/
+  uploads/articles/
+  uploads/partners/
+* Use relative paths.
+* Use secure validation.
+* Add preview before save.
+* Show current uploaded image in edit forms.
+* Do not delete old images unless there is already a safe delete/update system.
+
+==================================================
+TASK 6: DO NOT BREAK CURRENT SITE FUNCTIONALITY
+===============================================
+
+Very important:
+
+* Do not remove existing Admin Panel features.
+* Do not break Trainer Panel.
+* Do not break User Panel.
+* Do not break login/register/logout.
+* Do not break existing dashboard pages.
+* Do not break existing frontend sections.
+* Do not change database connection settings unless required.
+* Do not rename existing important files unless necessary.
+* Do not remove current styling.
+* Do not replace the entire project with a new one.
+* Make targeted fixes only.
+
+Before editing:
+
+* Inspect the existing file structure.
+* Identify the correct files responsible for:
+
+  * Admin frontend settings
+  * Hero section rendering
+  * Course create/edit
+  * Popular courses rendering
+  * Webinar section
+  * Article section
+  * Trusted partners section
+  * Image upload handling
+  * Database connection
+
+After editing:
+
+* Test every changed feature.
+* Make sure the frontend reflects Admin Panel changes.
+* Make sure existing data still loads correctly.
+* Make sure uploaded images display properly.
+* Make sure no broken image icons appear.
+* Make sure forms still submit correctly.
+* Make sure success/error messages work.
+
+==================================================
+EXPECTED FINAL RESULT
+=====================
+
+After implementation:
+
+1. Admin can upload a hero image from the computer.
+2. The uploaded hero image appears correctly on the frontend hero section.
+3. Hero image no longer depends only on image URL.
+4. Webinar images do not get cut off badly.
+5. Article images do not get cut off badly.
+6. Logos display fully without cropping.
+7. New courses added from Admin Panel can be marked as popular.
+8. Courses marked as popular appear in the frontend Popular Courses section.
+9. Courses not marked as popular do not appear in Popular Courses.
+10. Trusted Partners logos always show their original colors, not only on hover.
+11. The current LMS website design and existing functions remain safe and unchanged.
+
+==================================================
+QUALITY CHECKLIST
+=================
+
+Before finishing, verify:
+
+* Hero upload works.
+* Hero preview works in Admin Panel.
+* Hero image updates on frontend.
+* Invalid image files are rejected.
+* Oversized images are rejected.
+* Webinar image display is fixed.
+* Article image display is fixed.
+* Partner logos are always colored.
+* Course popular toggle saves correctly.
+* Popular Courses frontend section fetches real popular courses.
+* Course edit page can update popular status.
+* Existing records still work.
+* Responsive design works on mobile and desktop.
+* No console errors.
+* No PHP/MySQL errors.
+* No broken layout.
+* No broken login/session behavior.
+
+Please implement this carefully in my existing project using the current coding style and folder structure. Make the minimum required changes, keep the UI consistent, and do not disturb any working feature.

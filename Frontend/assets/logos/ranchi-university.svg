@@ -1,0 +1,9 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="80" viewBox="0 0 220 80" role="img" aria-labelledby="title desc">
+  <title id="title">Ranchi University</title>
+  <desc id="desc">Ranchi University logo placeholder</desc>
+  <rect width="220" height="80" rx="10" fill="#ffffff"/>
+  <circle cx="42" cy="40" r="22" fill="#111827"/>
+  <path d="M30 38h24v6H30zm3-11h18l7 8H26zm3 20h12v8H36z" fill="#ef3340"/>
+  <text x="78" y="36" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#111827">Ranchi</text>
+  <text x="78" y="57" font-family="Inter, Arial, sans-serif" font-size="18" font-weight="800" fill="#111827">University</text>
+</svg>

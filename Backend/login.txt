@@ -1,0 +1,500 @@
+I have an existing website for Emancipation Edutech Private Limited. Most frontend pages are already completed. I only need to integrate the login and register panels with the frontend and backend.
+
+Build a complete role-based authentication system for Admin, Trainer, and User.
+
+The login page must look exactly like the provided reference image. Match the same layout, colors, spacing, card design, button style, icons, typography, shadows, rounded corners, and overall professional red-and-white theme.
+
+Use the existing Emancipation Edutech logo from my website, preferably the same logo used on the homepage or course pages. Do not use a random logo.
+
+IMPORTANT:
+Admin should only have login.
+Trainer and User should have login plus a register option.
+
+At the bottom of the Trainer and User login panels, add this section:
+
+Don't have an account? Register
+
+The Register button should be red and should take the user to the correct register panel.
+
+Do NOT show this register section on the Admin login panel.
+
+==================================================
+LOGIN PAGE DESIGN
+==================================================
+
+Create a login page that visually matches the reference image.
+
+The page should have:
+
+1. Left red illustration section
+- Red gradient background
+- Education-themed icons and graphics
+- Graduation cap
+- Book icon
+- Target icon
+- User/team icon
+- Security shield
+- Desk/computer illustration
+- Decorative dots and abstract curved shapes
+- The design should feel modern, premium, and professional
+
+2. Right white login card
+- Large centered white card
+- Rounded corners
+- Soft shadow
+- Emancipation Edutech logo at the top
+- Heading: Welcome Back!
+- Subheading: Login to access your account
+- Section title: Login As
+- Three role tabs:
+  - Admin
+  - Trainer
+  - User
+
+Selected role tab style:
+- Red border
+- Red icon
+- Red text
+- Light red background
+
+Unselected role tab style:
+- Light gray border
+- Dark text
+- White background
+
+==================================================
+LOGIN FORM FIELDS
+==================================================
+
+For all three roles, show:
+
+- Email or Username input
+- Password input
+- Password visibility toggle icon
+- Remember me checkbox
+- Forgot Password link
+- Red Login button with arrow icon
+- Divider with "or"
+- Login with OTP button
+- Secure & Protected information box
+
+Admin login must NOT show the register section.
+
+Trainer login must show:
+
+Don't have an account? Register
+
+User login must show:
+
+Don't have an account? Register
+
+The Register button must be red and must redirect based on selected role:
+
+Trainer Register button -> trainer register page
+User Register button -> user register page
+
+==================================================
+ROLE SWITCHING FUNCTIONALITY
+==================================================
+
+The Admin, Trainer, and User tabs must be clickable.
+
+When Admin is selected:
+- Show Admin login form
+- Hide register section
+
+When Trainer is selected:
+- Show Trainer login form
+- Show register section
+- Register button opens Trainer Register page
+
+When User is selected:
+- Show User login form
+- Show register section
+- Register button opens User Register page
+
+The selected role should be passed to the backend during login.
+
+==================================================
+REGISTER PAGES
+==================================================
+
+Create two register pages only:
+
+1. Trainer Register
+2. User Register
+
+Do NOT create Admin Register.
+
+Both register pages should visually match the login page design.
+
+Use the same:
+- Red and white theme
+- Logo
+- Card style
+- Rounded inputs
+- Shadows
+- Icons
+- Typography
+- Responsive layout
+
+==================================================
+TRAINER REGISTER FORM
+==================================================
+
+Trainer register form should include:
+
+- Full Name
+- Email
+- Phone Number
+- Username
+- Password
+- Confirm Password
+- Specialization / Subject Expertise
+- Experience in Years
+- Qualification
+- Upload Profile Image
+- Terms and Conditions checkbox
+- Register button
+- Already have an account? Login
+
+After successful registration, redirect to Trainer Login panel.
+
+==================================================
+USER REGISTER FORM
+==================================================
+
+User register form should include:
+
+- Full Name
+- Email
+- Phone Number
+- Username
+- Password
+- Confirm Password
+- Course Interest dropdown
+- Upload Profile Image
+- Terms and Conditions checkbox
+- Register button
+- Already have an account? Login
+
+After successful registration, redirect to User Login panel.
+
+==================================================
+BACKEND INTEGRATION
+==================================================
+
+Connect the login and register forms to the backend.
+
+Use PHP and MySQL if the existing project uses PHP/MySQL.
+
+Do not break existing pages.
+Do not rewrite the whole website.
+Only add or modify files required for authentication.
+
+The backend must support:
+
+- Role-based login
+- Role-based registration
+- Secure password hashing
+- Password verification
+- Email uniqueness check
+- Username uniqueness check
+- Confirm password validation
+- File upload for profile image
+- Session handling
+- Role-based dashboard redirects
+- Role-based page protection
+
+==================================================
+DATABASE REQUIREMENTS
+==================================================
+
+If my project already has user tables, reuse and update them carefully.
+
+If not, create the following structure:
+
+users table:
+
+id INT AUTO_INCREMENT PRIMARY KEY
+full_name VARCHAR(100) NOT NULL
+email VARCHAR(100) NOT NULL UNIQUE
+phone VARCHAR(20)
+username VARCHAR(100) NOT NULL UNIQUE
+password VARCHAR(255) NOT NULL
+role ENUM('admin', 'trainer', 'user') NOT NULL
+profile_image VARCHAR(255)
+created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+trainer_details table:
+
+id INT AUTO_INCREMENT PRIMARY KEY
+user_id INT NOT NULL
+specialization VARCHAR(150)
+experience_years INT
+qualification VARCHAR(150)
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+
+user_details table:
+
+id INT AUTO_INCREMENT PRIMARY KEY
+user_id INT NOT NULL
+course_interest VARCHAR(150)
+FOREIGN KEY (user_id) REFERENCES users(id) ON DELETE CASCADE
+
+==================================================
+LOGIN AUTHENTICATION LOGIC
+==================================================
+
+When login form is submitted:
+
+1. Read selected role from the role tab.
+2. Read email/username and password.
+3. Validate required fields.
+4. Check whether the email or username exists.
+5. Check password using password_verify().
+6. Check whether selected role matches the account role.
+7. If credentials are wrong, show:
+
+Invalid username/email or password.
+
+8. If role does not match, show:
+
+Invalid login role selected.
+
+9. If login is successful, create session values:
+
+$_SESSION['user_id']
+$_SESSION['full_name']
+$_SESSION['email']
+$_SESSION['role']
+
+10. Redirect based on role:
+
+admin -> admin/dashboard.php
+trainer -> trainer/dashboard.php
+user -> user/dashboard.php
+
+If my existing dashboard paths are different, detect and use the existing paths.
+
+==================================================
+REGISTER AUTHENTICATION LOGIC
+==================================================
+
+When Trainer or User registration form is submitted:
+
+1. Validate required fields.
+2. Validate email format.
+3. Check email already exists.
+4. Check username already exists.
+5. Check password and confirm password match.
+6. Hash password using password_hash().
+7. Validate uploaded profile image.
+8. Save profile image to uploads folder.
+9. Insert main data into users table.
+10. Insert trainer-specific data into trainer_details table if role is trainer.
+11. Insert user-specific data into user_details table if role is user.
+12. Show success message.
+13. Redirect to correct login panel.
+
+==================================================
+SECURITY REQUIREMENTS
+==================================================
+
+Implement:
+
+- password_hash()
+- password_verify()
+- Prepared statements
+- Server-side validation
+- Client-side validation
+- Session security
+- Role-based access control
+- File upload validation
+- Image upload type checking
+- Protection against direct dashboard access
+- Protection against users accessing another role dashboard
+
+Dashboard access rules:
+
+- Admin can access only admin dashboard
+- Trainer can access only trainer dashboard
+- User can access only user dashboard
+
+If a user tries to access the wrong dashboard, redirect them to login or their correct dashboard.
+
+==================================================
+OTP LOGIN
+==================================================
+
+Add the Login with OTP button exactly like the reference image.
+
+If OTP backend already exists, connect it.
+
+If OTP backend does not exist, create the frontend structure and dummy flow for now.
+
+OTP flow:
+
+1. User clicks Login with OTP.
+2. Open OTP modal or page.
+3. Ask for email or phone number.
+4. Show Send OTP button.
+5. Show OTP input.
+6. Show Verify OTP button.
+7. On successful dummy verification, redirect based on selected role.
+
+Keep the OTP code modular so real backend OTP logic can be added later.
+
+==================================================
+FORGOT PASSWORD
+==================================================
+
+Forgot Password link should be clickable.
+
+If forgot password backend exists, connect it.
+
+If not, create a basic modal or page with:
+
+- Email input
+- Submit button
+- Success message placeholder
+
+Keep it ready for future backend integration.
+
+==================================================
+FRONTEND FUNCTIONALITY
+==================================================
+
+All frontend buttons and interactions must work.
+
+Required functionality:
+
+- Admin, Trainer, and User tabs are clickable
+- Selected role tab visually updates
+- Register section appears only for Trainer and User
+- Register section is hidden for Admin
+- Register button redirects to correct register page
+- Login form submits selected role to backend
+- Password eye icon toggles password visibility
+- Remember me checkbox works visually
+- Forgot password opens page or modal
+- Login with OTP opens OTP flow
+- Register form validates fields before submit
+- Confirm password validates matching password
+- Terms and conditions checkbox must be checked before registration
+
+==================================================
+UI STYLE REQUIREMENTS
+==================================================
+
+Use a professional red and white design matching the reference image.
+
+Use these colors or very close alternatives:
+
+Main red: #e50914
+Dark red: #b90000
+Dark text: #111827
+Muted text: #6b7280
+Light border: #e5e7eb
+White: #ffffff
+Light background: #f9fafb
+
+Design details:
+
+- Smooth shadows
+- Rounded card corners
+- Rounded input boxes
+- Icons inside input fields
+- Hover effects on buttons
+- Smooth tab switching
+- Clean typography
+- Good spacing
+- Premium modern UI
+- Mobile-friendly layout
+
+The login button should:
+- Be red
+- Have white text
+- Have an arrow icon on the right
+- Look exactly like the reference image button
+
+The Login with OTP button should:
+- Have a white background
+- Red border
+- Red text
+- Shield icon
+- Match the reference image
+
+The Secure & Protected box should:
+- Have light gray/white background
+- Shield icon
+- Text: Secure & Protected
+- Subtext: Your data is safe with us
+
+==================================================
+RESPONSIVE DESIGN
+==================================================
+
+The login and register pages must look good on:
+
+- Desktop
+- Laptop
+- Tablet
+- Mobile
+
+On mobile:
+- Keep the card centered
+- Make inputs full width
+- Resize logo properly
+- Hide or stack the left red illustration section if needed
+- Buttons should be easy to tap
+- No horizontal scrolling
+
+==================================================
+SUGGESTED FILE STRUCTURE
+==================================================
+
+Use this structure if suitable for my existing project:
+
+login.php
+register_trainer.php
+register_user.php
+auth_login.php
+auth_register.php
+logout.php
+forgot_password.php
+otp_login.php
+db_connect.php
+auth_check.php
+assets/css/auth.css
+assets/js/auth.js
+uploads/profile_images/
+
+If my project already has similar files, update the existing files instead of creating duplicates.
+
+==================================================
+FINAL RESULT EXPECTED
+==================================================
+
+After implementation, I should have:
+
+1. A login page that looks exactly like the reference image.
+2. Admin, Trainer, and User login tabs.
+3. Admin login with no register option.
+4. Trainer login with register option.
+5. User login with register option.
+6. Trainer register panel.
+7. User register panel.
+8. Working frontend interactions.
+9. Backend login/register integration.
+10. Secure password handling.
+11. Role-based redirects.
+12. Protected dashboards.
+13. Responsive layout.
+14. Clean code that fits into my existing website.
+15. No broken existing pages.
+
+Make the implementation polished, professional, clean, and production-ready.
+
+
+c:\Users\Akshat Arya\Downloads\WhatsApp Image 2026-06-09 at 11.09.03.jpeg

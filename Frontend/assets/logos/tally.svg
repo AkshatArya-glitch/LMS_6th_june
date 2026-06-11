@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="220" height="80" viewBox="0 0 220 80" role="img" aria-labelledby="title desc">
+  <title id="title">Tally</title>
+  <desc id="desc">Tally logo placeholder</desc>
+  <rect width="220" height="80" rx="10" fill="#ffffff"/>
+  <path d="M28 24h52v12H60v28H48V36H28z" fill="#ef3340"/>
+  <text x="92" y="52" font-family="Inter, Arial, sans-serif" font-size="32" font-weight="900" fill="#111827">Tally</text>
+</svg>

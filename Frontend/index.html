@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EEPL Classroom — Learn Today. Lead Tomorrow.</title>
+  <meta name="description" content="EEPL Classroom offers industry-relevant courses in Data Analytics, Java Full Stack, Spoken English, JEE/NEET and more. Build skills, boost confidence and achieve your career goals.">
+  <meta name="keywords" content="EEPL Classroom, courses, webinars, certification, data analytics, java, spoken english, JEE, NEET, Ranchi">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <!-- ===== PROMOTION POPUP ===== -->
+  <div class="promo-overlay" id="promo-overlay">
+    <div class="promo-popup" id="promo-popup">
+      <!-- Populated by JS from siteData.promotionPopup -->
+    </div>
+  </div>
+
+  <!-- ===== STICKY HEADER ===== -->
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo" id="header-logo">
+        <img src="assets/eepl-reference-logo.png" alt="Emancipation Edutech Private Limited" class="header-logo-img">
+      </a>
+      <nav class="main-nav" id="main-nav">
+        <ul class="nav-list" id="nav-list">
+          <!-- Populated by JS -->
+        </ul>
+      </nav>
+      <div class="header-actions" id="header-actions">
+        <a href="/login" class="btn btn-outline-red" id="btn-login">Login</a>
+        <a href="/register" class="btn btn-red" id="btn-register">Register</a>
+      </div>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <!-- Mobile Menu -->
+    <div class="mobile-menu" id="mobile-menu">
+      <ul class="mobile-nav-list" id="mobile-nav-list"></ul>
+      <div class="mobile-actions">
+        <a href="/login" class="btn btn-outline-red">Login</a>
+        <a href="/register" class="btn btn-red">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ===== HERO SECTION ===== -->
+    <section class="hero" id="hero-section">
+      <div class="hero-container">
+        <div class="hero-content" id="hero-content">
+          <!-- Populated by JS -->
+        </div>
+        <div class="hero-visual" id="hero-visual">
+          <div class="hero-image-wrapper">
+            <img src="" alt="Student learning" id="hero-image" class="hero-img">
+            <div class="hero-blob"></div>
+          </div>
+          <div class="hero-badges" id="hero-badges">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+      <button class="hero-arrow hero-arrow-left" id="hero-prev" aria-label="Previous slide">&#8249;</button>
+      <button class="hero-arrow hero-arrow-right" id="hero-next" aria-label="Next slide">&#8250;</button>
+    </section>
+
+    <!-- ===== STATS / TRUST METRICS ===== -->
+    <section class="section stats-section" id="stats-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-line"></div>
+          <h2 class="section-title">A Platform Trusted By Thousands</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="stats-grid" id="stats-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== POPULAR COURSES ===== -->
+    <section class="section courses-section" id="courses-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-line"></div>
+          <h2 class="section-title">Popular Courses</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="courses-grid" id="courses-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== UPCOMING WEBINARS ===== -->
+    <section class="section webinars-section" id="webinars-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-line"></div>
+          <h2 class="section-title">Upcoming Webinars</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="webinars-grid" id="webinars-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TRUSTED BY ===== -->
+    <section class="section trusted-section" id="trusted-section">
+      <div class="container">
+        <h2 class="section-title trusted-title">Trusted By</h2>
+        <div class="trusted-logos" id="trusted-logos">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== CERTIFICATION ===== -->
+    <section class="section cert-section" id="cert-section">
+      <div class="container">
+        <div class="section-header">
+          <h2 class="section-title">Industry Recognized Certifications</h2>
+          <div class="section-line section-line-right"></div>
+        </div>
+        <div class="cert-grid" id="cert-grid">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS ===== -->
+    <section class="section testimonials-section" id="testimonials-section">
+      <div class="container">
+        <div class="section-header">
+          <div class="section-line"></div>
+          <h2 class="section-title">What Our Students Say</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="testimonials-wrapper">
+          <button class="testimonial-arrow testimonial-arrow-left" id="testimonial-prev" aria-label="Previous testimonials">&#8249;</button>
+          <div class="testimonials-grid" id="testimonials-grid">
+            <!-- Populated by JS -->
+          </div>
+          <button class="testimonial-arrow testimonial-arrow-right" id="testimonial-next" aria-label="Next testimonials">&#8250;</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== BOTTOM CTA ===== -->
+    <section class="section cta-section" id="cta-section">
+      <div class="container">
+        <div class="cta-card" id="cta-card">
+          <!-- Populated by JS -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FREE COUNSELLING ===== -->
+    <section class="section counselling-section" id="counselling-section">
+      <div class="container">
+        <div class="counselling-card" id="counselling-card">
+          <!-- Left Panel -->
+          <div class="counselling-left" id="counselling-left">
+            <!-- Populated by JS -->
+          </div>
+          <!-- Right Panel -->
+          <div class="counselling-right" id="counselling-right">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== FAQ ===== -->
+    <section class="section faq-section" id="faq-section" hidden>
+      <div class="container">
+        <div class="section-header">
+          <div class="section-line"></div>
+          <h2 class="section-title">Frequently Asked Questions</h2>
+          <div class="section-line"></div>
+        </div>
+        <div class="faq-list" id="faq-list"></div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ===== FOOTER ===== -->
+  <footer class="site-footer" id="site-footer">
+    <div class="footer-container">
+      <div class="footer-grid" id="footer-grid">
+        <!-- Populated by JS -->
+      </div>
+      <div class="footer-bottom">
+        <p id="footer-copyright"></p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="data.js"></script>
+  <script src="app.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

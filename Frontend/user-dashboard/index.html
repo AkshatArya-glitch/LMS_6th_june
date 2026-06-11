@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>User Dashboard | Emancipation</title>
+  <meta name="description" content="Student learning portal dashboard for EEPL Classroom.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/messages.css">
+  <link rel="stylesheet" href="user-dashboard.css">
+</head>
+<body>
+  <div class="dashboard-shell">
+    <aside class="dashboard-sidebar" id="dashboard-sidebar">
+      <div class="sidebar-brand">
+        <a href="../index.html" class="brand-lockup" aria-label="Emancipation home">
+          <img src="../assets/eepl-reference-logo.png" alt="Emancipation Edutech Private Limited">
+        </a>
+      </div>
+
+      <nav class="sidebar-nav" id="sidebar-nav" aria-label="Student dashboard navigation"></nav>
+
+      <div class="refer-card">
+        <div class="refer-icon" aria-hidden="true">&#127873;</div>
+        <div>
+          <h3>Refer & Earn</h3>
+          <p>Invite your friends and earn exciting rewards.</p>
+        </div>
+        <button class="refer-btn dashboard-action" type="button" data-action="Refer Now">Refer Now <span aria-hidden="true">&rarr;</span></button>
+      </div>
+
+      <button class="sidebar-profile dashboard-action" type="button" data-action="Open Profile Menu">
+        <img src="../assets/dashboard/amit-avatar.jpg" alt="Student">
+        <span>
+          <strong>Student</strong>
+          <small>Student</small>
+        </span>
+        <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+      </button>
+    </aside>
+
+    <div class="dashboard-main">
+      <header class="dashboard-topbar">
+        <button class="menu-toggle" id="menu-toggle" aria-label="Toggle menu" type="button">
+          <span></span><span></span><span></span>
+        </button>
+        <div class="welcome-copy">
+          <h1>Welcome back! <span aria-hidden="true">&#128075;</span></h1>
+          <p>Keep learning and grow your skills</p>
+        </div>
+
+        <label class="dashboard-search" for="dashboard-search">
+          <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.4-3.4"/></svg>
+          <input id="dashboard-search" type="search" placeholder="Search for courses, quizzes, materials...">
+          <kbd>Ctrl /</kbd>
+        </label>
+
+        <div class="topbar-actions">
+          <button class="top-icon dashboard-action" type="button" data-action="Notifications" aria-label="Notifications">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9"/><path d="M10 21h4"/></svg>
+            <span>0</span>
+          </button>
+          <button class="top-icon dashboard-action" type="button" data-action="Messages" aria-label="Messages">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 4h16v14H4z"/><path d="m4 7 8 6 8-6"/></svg>
+            <span>0</span>
+          </button>
+          <button class="top-profile dashboard-action" type="button" data-action="Open User Menu">
+            <img src="../assets/dashboard/amit-avatar.jpg" alt="Student">
+            <span>
+              <strong>Student</strong>
+              <small>Student</small>
+            </span>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
+          </button>
+        </div>
+      </header>
+
+      <main class="dashboard-content">
+        <section class="stats-grid" id="stats-grid" aria-label="Learning summary"></section>
+
+        <section class="dashboard-grid">
+          <div class="main-grid-left">
+            <article class="dash-card course-progress-card">
+              <div class="card-heading">
+                <h2>My Course Progress</h2>
+                <button class="link-btn dashboard-action" type="button" data-action="View All Courses">View All Courses <span aria-hidden="true">&rarr;</span></button>
+              </div>
+              <div id="course-progress-list"></div>
+            </article>
+
+            <article class="dash-card deadlines-card">
+              <div class="card-heading">
+                <h2>Upcoming Deadlines</h2>
+                <button class="link-btn dashboard-action" type="button" data-action="View Deadlines">View All</button>
+              </div>
+              <div id="deadlines-list"></div>
+            </article>
+
+            <article class="dash-card recent-card">
+              <div class="card-heading">
+                <h2>Recent Activities</h2>
+                <button class="link-btn dashboard-action" type="button" data-action="View Recent Activities">View All</button>
+              </div>
+              <div id="activities-list"></div>
+            </article>
+
+            <article class="dash-card batches-card">
+              <div class="card-heading">
+                <h2>My Batches</h2>
+                <button class="link-btn dashboard-action" type="button" data-action="View Batches">View All</button>
+              </div>
+              <div id="batches-list"></div>
+            </article>
+
+            <section class="continue-card">
+              <div class="card-heading">
+                <h2>Continue Learning</h2>
+              </div>
+              <div id="continue-learning"></div>
+            </section>
+          </div>
+
+          <aside class="right-stack">
+            <article class="dash-card calendar-card">
+              <div class="calendar-head">
+                <h2>Calendar</h2>
+                <strong>Current Month</strong>
+                <div class="calendar-nav">
+                  <button class="dashboard-action" type="button" data-action="Previous Month" aria-label="Previous month">&lsaquo;</button>
+                  <button class="dashboard-action" type="button" data-action="Next Month" aria-label="Next month">&rsaquo;</button>
+                </div>
+              </div>
+              <div class="calendar-grid" id="calendar-grid"></div>
+            </article>
+
+            <article class="dash-card">
+              <div class="card-heading">
+                <h2>Announcements</h2>
+                <button class="link-btn dashboard-action" type="button" data-action="View Announcements">View All</button>
+              </div>
+              <div id="announcements-list"></div>
+            </article>
+
+            <article class="dash-card quick-links-card">
+              <div class="card-heading">
+                <h2>Quick Links</h2>
+              </div>
+              <div class="quick-links" id="quick-links"></div>
+            </article>
+          </aside>
+        </section>
+
+        <footer class="dashboard-footer">
+          <span>&copy; Emancipation Edutech Private Limited. All Rights Reserved.</span>
+          <span>Version 1.0.0</span>
+        </footer>
+      </main>
+    </div>
+  </div>
+
+  <div class="toast" id="dashboard-toast" role="status" aria-live="polite"></div>
+  <div class="sidebar-backdrop" id="sidebar-backdrop"></div>
+
+  <script src="../assets/js/messages.js"></script>
+  <script src="user-dashboard.js"></script>
+</body>
+</html>

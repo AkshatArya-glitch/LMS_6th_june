@@ -1,0 +1,40 @@
+{
+  "info": {
+    "name": "EEPL Classes - Full API",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    { "name": "Auth - Register", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"name\": \"Test User\",\n  \"email\": \"test@example.com\",\n  \"password\": \"secret\"\n}" }, "url": "{{base_url}}/v1/auth/register" } },
+    { "name": "Auth - Login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"test@example.com\",\n  \"password\": \"secret\"\n}" }, "url": "{{base_url}}/v1/auth/login" }, "event": [{ "listen": "test", "script": { "exec": [ "var json = pm.response.json();", "if (json.token) { pm.environment.set('token', json.token); }" ] } }] },
+    { "name": "Auth - Admin Login", "request": { "method": "POST", "header": [{ "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"email\": \"admin@example.com\",\n  \"password\": \"adminpassword\"\n}" }, "url": "{{base_url}}/v1/auth/admin-login" }, "event": [{ "listen": "test", "script": { "exec": [ "var json = pm.response.json();", "if (json.token) { pm.environment.set('token', json.token); }" ] } }] },
+
+    { "name": "Auth - Logout", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/auth/logout" } },
+    { "name": "Auth - Refresh", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/auth/refresh" } },
+    { "name": "Auth - Me", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/auth/me" } },
+
+    { "name": "Courses - List", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/courses" } },
+    { "name": "Courses - Get", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/courses/1" } },
+    { "name": "Courses - Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"New Course\",\n  \"description\": \"Example description\"\n}" }, "url": "{{base_url}}/v1/courses" } },
+    { "name": "Courses - Update", "request": { "method": "PUT", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Updated Course\",\n  \"description\": \"Updated description\"\n}" }, "url": "{{base_url}}/v1/courses/1" } },
+    { "name": "Courses - Delete", "request": { "method": "DELETE", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/courses/1" } },
+
+    { "name": "Enrollments - Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"student_id\": 1,\n  \"course_id\": 1\n}" }, "url": "{{base_url}}/v1/enrollments" } },
+    { "name": "Enrollments - List", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/enrollments" } },
+    { "name": "Enrollments - Get", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/enrollments/1" } },
+
+    { "name": "Progress - Mark Complete", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"student_id\": 1,\n  \"course_id\": 1,\n  \"module_id\": 2\n}" }, "url": "{{base_url}}/v1/progress/mark-complete" } },
+    { "name": "Progress - Get Course", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/progress/1" } },
+    { "name": "Progress - Get All", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/progress/all" } },
+
+    { "name": "Quizzes - List", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/quizzes" } },
+    { "name": "Quizzes - Get", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/quizzes/1" } },
+    { "name": "Quizzes - Submit Attempt", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"answers\": [ { \"question_id\": 1, \"answer\": \"A\" } ]\n}" }, "url": "{{base_url}}/v1/quizzes/1/attempt" } },
+    { "name": "Quizzes - Results", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/quizzes/1/results" } },
+    { "name": "Quizzes - Create", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"title\": \"Sample Quiz\",\n  \"questions\": [ { \"text\": \"Question 1?\", \"options\": [\"A\",\"B\",\"C\"], \"answer\": \"A\" } ]\n}" }, "url": "{{base_url}}/v1/quizzes" } },
+
+    { "name": "Admin - Dashboard", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/admin/dashboard" } },
+    { "name": "Admin - Students", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/admin/students" } },
+    { "name": "Admin - Analytics", "request": { "method": "GET", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }], "url": "{{base_url}}/v1/admin/analytics" } },
+    { "name": "Admin - Generate Certificates", "request": { "method": "POST", "header": [{ "key": "Authorization", "value": "Bearer {{token}}" }, { "key": "Content-Type", "value": "application/json" }], "body": { "mode": "raw", "raw": "{\n  \"course_id\": 1,\n  \"batch\": \"2026-06-03\"\n}" }, "url": "{{base_url}}/v1/admin/certificates/generate" } }
+  ]
+}

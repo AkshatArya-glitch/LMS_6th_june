@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Articles | EEPL Classroom</title>
+  <meta name="description" content="Educational articles, learning guides, and career updates from EEPL Classroom.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+  <link rel="stylesheet" href="articles.css">
+</head>
+<body class="articles-page">
+  <header class="site-header" id="site-header">
+    <div class="header-container">
+      <a href="index.html" class="logo" id="header-logo">
+        <img src="assets/eepl-reference-logo.png" alt="Emancipation Edutech Private Limited" class="header-logo-img">
+      </a>
+      <nav class="main-nav" id="main-nav">
+        <ul class="nav-list" id="nav-list"></ul>
+      </nav>
+      <div class="header-actions" id="header-actions">
+        <a href="/login" class="btn btn-outline-red" id="btn-login">Login</a>
+        <a href="/register" class="btn btn-red" id="btn-register">Register</a>
+      </div>
+      <button class="hamburger" id="hamburger-btn" aria-label="Open menu">
+        <span></span><span></span><span></span>
+      </button>
+    </div>
+    <div class="mobile-menu" id="mobile-menu">
+      <ul class="mobile-nav-list" id="mobile-nav-list"></ul>
+      <div class="mobile-actions">
+        <a href="/login" class="btn btn-outline-red">Login</a>
+        <a href="/register" class="btn btn-red">Register</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <section class="articles-hero">
+      <div class="container articles-hero-container">
+        <div class="articles-hero-left">
+          <h1>Articles</h1>
+          <p class="articles-hero-sub">Stay informed with the latest insights, tips, and trends on competitive exams, and technology.</p>
+        </div>
+        <div class="articles-hero-right">
+          <label class="search-box" for="articles-search">
+            <svg viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M21 21l-4.35-4.35" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+              <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <input id="articles-search" type="search" placeholder="Search articles...">
+          </label>
+        </div>
+      </div>
+    </section>
+
+    <section class="articles-main">
+      <div class="container articles-layout">
+        <aside class="articles-sidebar" id="articles-sidebar"></aside>
+
+        <section class="articles-content" aria-label="Article list">
+          <div class="articles-controls">
+            <div class="tabs" id="articles-tabs" role="tablist" aria-label="Article categories"></div>
+            <div class="sort-select">
+              <select id="sort-select" aria-label="Sort articles">
+                <option value="newest">Newest First</option>
+                <option value="oldest">Oldest First</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="articles-grid-cards" id="articles-grid-cards"></div>
+          <div class="articles-pagination" id="articles-pagination" aria-label="Article pagination"></div>
+        </section>
+      </div>
+    </section>
+
+    <section class="articles-cta">
+      <div class="container">
+        <div class="articles-cta-inner">
+          <div class="articles-cta-person articles-cta-person-left" aria-hidden="true"></div>
+          <div class="articles-cta-copy">
+            <h2>Ready to Get Certified?</h2>
+            <p>Take the assessment and showcase your skills.</p>
+            <a href="courses.html" class="articles-cta-btn">Join our courses <span aria-hidden="true">&rarr;</span></a>
+          </div>
+          <div class="articles-cta-person articles-cta-person-right" aria-hidden="true"></div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer" id="site-footer">
+    <div class="footer-container">
+      <div class="footer-grid" id="footer-grid"></div>
+      <div class="footer-bottom">
+        <p id="footer-copyright"></p>
+      </div>
+    </div>
+  </footer>
+
+  <div class="articles-floating-actions" aria-label="Quick contact actions">
+    <a href="https://wa.me/919835131568" target="_blank" class="articles-float-btn articles-float-wa" aria-label="Chat on WhatsApp">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M17.47 14.38c-.3-.15-1.76-.87-2.03-.97-.27-.1-.47-.15-.67.15-.2.3-.77.97-.94 1.16-.17.2-.35.22-.64.08-.3-.15-1.26-.46-2.39-1.48-.88-.79-1.48-1.76-1.65-2.06-.17-.3-.02-.46.13-.61.13-.13.3-.35.45-.52.15-.17.2-.3.3-.5.1-.2.05-.37-.03-.52-.07-.15-.67-1.61-.92-2.21-.24-.58-.49-.5-.67-.51h-.57c-.2 0-.52.07-.79.37-.27.3-1.04 1.02-1.04 2.48s1.07 2.88 1.21 3.07c.15.2 2.1 3.2 5.08 4.49.71.31 1.26.49 1.69.63.71.23 1.36.2 1.87.12.57-.09 1.76-.72 2.01-1.41.25-.69.25-1.29.17-1.41-.07-.12-.27-.2-.57-.35M12.05 21.79h-.01a9.87 9.87 0 0 1-5.03-1.38l-.36-.21-3.74.98 1-3.65-.24-.37a9.86 9.86 0 0 1-1.51-5.26c0-5.45 4.44-9.88 9.89-9.88a9.83 9.83 0 0 1 6.99 2.9 9.82 9.82 0 0 1 2.89 6.99c0 5.45-4.44 9.88-9.88 9.88M20.46 3.49A11.82 11.82 0 0 0 12.05 0C5.5 0 .16 5.34.16 11.89c0 2.1.55 4.14 1.59 5.95L.06 24l6.3-1.65a11.88 11.88 0 0 0 5.68 1.45h.01c6.55 0 11.89-5.34 11.89-11.89 0-3.18-1.24-6.17-3.48-8.42Z"/></svg>
+    </a>
+    <a href="tel:+919835131568" class="articles-float-btn articles-float-phone" aria-label="Call EEPL">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.01-.24c1.12.37 2.33.57 3.58.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.61 21 3 13.39 3 4a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.25.2 2.46.57 3.58a1 1 0 0 1-.25 1.01l-2.2 2.2Z"/></svg>
+    </a>
+  </div>
+
+  <script src="data.js"></script>
+  <script src="articles-data.js"></script>
+  <script src="articles-app.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

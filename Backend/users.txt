@@ -1,0 +1,448 @@
+I have an existing website folder named LMS. I want you to carefully inspect the full project structure first before making changes. The website already has frontend and backend files, but the system currently has major issues, especially with login and dashboard data.
+
+Main problem:
+When I log in as a normal user/student, the website opens a static user dashboard panel with hardcoded information instead of showing the real details of the logged-in user. For example, if I log in with a different user’s credentials, the dashboard still shows the same static name, courses, batches, progress, assignments, etc. I want this fixed completely.
+
+Your task is to fully integrate the frontend and backend so that the dashboards are dynamic, functional, and role-based.
+
+Important roles:
+1. Admin
+2. Trainer
+3. User / Student
+
+All three dashboards must work separately based on login credentials and role.
+
+General requirements:
+- Do not create a static image dashboard.
+- Do not hardcode user names, courses, assignments, progress, batches, or dashboard numbers.
+- Every dashboard must fetch and display real data from the database.
+- After login, redirect the person to the correct dashboard based on their role.
+- If a user logs in, show only that user’s own data.
+- If a trainer logs in, show only that trainer’s assigned batches, courses, students, assignments, messages, and related data.
+- If an admin logs in, show overall LMS data and management controls.
+- Make sure session handling works properly.
+- Prevent users from manually accessing admin or trainer pages through the URL.
+- Add proper authentication checks on every protected dashboard page.
+- Fix logout so it destroys the session and redirects to login.
+- Add clean error messages for invalid login, wrong password, inactive account, or missing fields.
+- Keep the existing website design, colors, logo, navbar style, sidebar style, and layout consistent.
+
+Dashboard design requirement:
+The user, admin, and trainer dashboards should all follow a similar professional dashboard style like the reference image:
+- Dark left sidebar
+- Logo at the top
+- Active menu item highlighted in blue
+- White main content area
+- Top header with welcome message, search bar, notification icons, profile image/name, and role
+- Modern stat cards at the top
+- Clean white cards with rounded corners
+- Soft shadows and spacing
+- Professional LMS look
+- Responsive layout
+- Dashboard should look polished, modern, and attractive
+- Use the same logo used in the existing LMS website
+- Do not use the old static dashboard image as a screenshot; recreate it properly using HTML, CSS, JavaScript, PHP, and database data
+
+User / Student dashboard functionality:
+The user dashboard must show real logged-in student data:
+- Welcome message with the logged-in student’s real name
+- Student profile image if available, otherwise show default avatar
+- Enrolled courses count
+- Pending assignments count
+- Upcoming assessments count
+- Earned certificates count
+- Total learning hours
+- My Course Progress section with only that student’s enrolled courses
+- Course progress percentage from database
+- Batch name for each course
+- Upcoming deadlines based on assignments, quizzes, assessments, and project submissions
+- Calendar section
+- Announcements section
+- Recent activities section
+- My batches section
+- Continue learning section
+- Quick links section
+- Browse courses button
+- Join live class button
+- Download app button can be dummy/clickable
+- Help center button
+- Messages section
+- Payment history link
+- Wishlist link
+- Profile settings link
+- Attendance link
+- Certificates link
+- Study materials link
+- Live classes link
+
+Every sidebar button on the user dashboard must be clickable and must open a related page:
+- Dashboard
+- My Courses
+- My Enrollments
+- My Batches
+- Assignments
+- Assessments
+- Certificates
+- Study Materials
+- Attendance
+- Live Classes
+- Messages
+- Payment History
+- Wishlist
+- Profile Settings
+
+For pages that do not yet have backend data, create clean frontend pages with dummy data, but structure the code so backend data can easily replace the dummy data later. Do not leave buttons dead.
+
+Trainer dashboard functionality:
+The trainer dashboard should look similar to the user/admin dashboard style but with trainer-specific data:
+- Welcome message with real trainer name
+- Assigned courses count
+- Assigned batches count
+- Total students under trainer
+- Pending assignments to review
+- Upcoming live classes
+- Messages count
+- Trainer’s courses
+- Trainer’s batches
+- Student performance overview
+- Assignment submissions
+- Assessment results
+- Upcoming schedule
+- Announcements
+- Recent activities
+- Quick links
+
+Trainer sidebar pages must be clickable:
+- Dashboard
+- My Courses
+- My Batches
+- Students
+- Assignments
+- Assessments
+- Study Materials
+- Live Classes
+- Attendance
+- Messages
+- Announcements
+- Profile Settings
+
+Trainer should only see data connected to their trainer ID.
+
+Admin dashboard functionality:
+The admin dashboard should use the same visual style as the reference dashboard/admin panel style:
+- Welcome message with admin name
+- Total users/students
+- Total trainers
+- Total courses
+- Total batches
+- Total enrollments
+- Total revenue/payments if payment table exists
+- Pending approvals
+- Recent registrations
+- Course overview
+- Batch overview
+- User activity
+- Announcements
+- System notifications
+- Graphs/cards with real or dummy data depending on database availability
+
+Admin sidebar pages must be clickable:
+- Dashboard
+- Manage Users
+- Manage Trainers
+- Manage Courses
+- Manage Batches
+- Enrollments
+- Assignments
+- Assessments
+- Certificates
+- Study Materials
+- Payments
+- Messages
+- Announcements
+- Reports
+- Settings
+
+Admin should be able to view/manage global LMS data.
+
+Login and role-based authentication:
+Fix the login system properly:
+- Login form should accept email/username and password.
+- Passwords should be verified securely.
+- Use password_hash and password_verify if the project uses PHP.
+- Store logged-in user ID, name, email, and role in session.
+- Redirect based on role:
+  - admin -> admin dashboard
+  - trainer -> trainer dashboard
+  - user/student -> user dashboard
+- If role is unknown, show an error.
+- Add session protection to every dashboard page.
+- If someone is not logged in, redirect to login page.
+- If a student tries to open admin dashboard manually, redirect or show access denied.
+- If trainer tries to open admin dashboard manually, redirect or show access denied.
+- If admin tries to access user-only page, handle properly.
+
+Register functionality:
+Make sure register works correctly for allowed roles.
+- User/student registration should create a student account.
+- Trainer registration should create trainer account only if the project requires it.
+- Admin registration should not be publicly available unless already part of project.
+- Validate all fields.
+- Prevent duplicate email.
+- Hash password.
+- Save user data properly in database.
+- After successful registration, redirect to login or dashboard based on current website flow.
+
+Database integration:
+Inspect the existing database connection file and use it consistently.
+Do not create random new connection systems if one already exists.
+Use prepared statements for all SQL queries.
+Fix or create required queries for:
+- Users
+- Roles
+- Courses
+- Enrollments
+- Batches
+- Assignments
+- Assessments
+- Certificates
+- Attendance
+- Live classes
+- Study materials
+- Messages
+- Payments
+- Announcements
+- Activities
+- Progress tracking
+
+If any required table or column is missing, create a clear SQL migration file named something like:
+database_updates.sql
+
+The SQL file should safely create missing tables or columns without breaking existing data.
+
+Suggested database relationships:
+- users table should include:
+  - id
+  - name
+  - email
+  - password
+  - role
+  - profile_image
+  - status
+  - created_at
+
+- courses table should include:
+  - id
+  - title
+  - description
+  - trainer_id
+  - image/icon
+  - status
+  - created_at
+
+- batches table should include:
+  - id
+  - batch_name
+  - course_id
+  - trainer_id
+  - start_date
+  - end_date
+  - status
+
+- enrollments table should include:
+  - id
+  - user_id
+  - course_id
+  - batch_id
+  - progress
+  - enrolled_at
+  - status
+
+- assignments table should include:
+  - id
+  - course_id
+  - batch_id
+  - trainer_id
+  - title
+  - description
+  - due_date
+  - status
+
+- assignment_submissions table should include:
+  - id
+  - assignment_id
+  - user_id
+  - file_path
+  - marks
+  - feedback
+  - submitted_at
+  - status
+
+- assessments table should include:
+  - id
+  - course_id
+  - batch_id
+  - title
+  - assessment_date
+  - status
+
+- certificates table should include:
+  - id
+  - user_id
+  - course_id
+  - certificate_file
+  - issued_at
+
+- announcements table should include:
+  - id
+  - title
+  - message
+  - target_role
+  - created_at
+
+- activities table should include:
+  - id
+  - user_id
+  - activity_text
+  - activity_type
+  - created_at
+
+Use existing table names if the project already has them. Do not duplicate tables unnecessarily. If the current schema is different, adapt the queries to the existing schema.
+
+User dashboard dynamic data rules:
+- Name must come from session/database.
+- Enrolled courses count must come from enrollments table.
+- Pending assignments must come from assignments not submitted or not graded.
+- Course progress must come from enrollments.progress or calculated progress.
+- My batches must come from batches linked through enrollments.
+- Certificates must come from certificates table.
+- Recent activities must come from activities table or generated from recent submissions/enrollments.
+- Announcements must come from announcements table filtered for student/user/all.
+- Deadlines must come from assignments/assessments where due date is upcoming.
+- Continue learning must show latest active enrolled course.
+
+Admin dashboard dynamic data rules:
+- Total users should count users with role user/student.
+- Total trainers should count users with role trainer.
+- Total courses should count courses.
+- Total batches should count batches.
+- Enrollments should count enrollments.
+- Recent registrations should pull latest users.
+- Reports/cards should use database counts.
+
+Trainer dashboard dynamic data rules:
+- Trainer must be identified from session user ID.
+- Trainer courses should be filtered by trainer_id.
+- Trainer batches should be filtered by trainer_id.
+- Trainer students should be students enrolled in trainer’s courses/batches.
+- Assignment submissions should be filtered by assignments created by that trainer.
+- Live classes should be filtered by trainer_id if table exists.
+
+Frontend design requirements:
+- Build proper HTML/CSS/JS layout, not image-based UI.
+- Make cards, tables, dropdowns, sidebar, navbar, and buttons functional.
+- Use modern responsive CSS.
+- Use icons if the project already uses an icon library.
+- If no icon library exists, use Font Awesome or simple inline icons.
+- Keep spacing, rounded cards, shadows, and professional colors similar to the reference.
+- The left sidebar should remain fixed or sticky on desktop.
+- On mobile/tablet, sidebar should collapse with hamburger menu.
+- Top search bar should be visible.
+- Notification and message icons should be clickable.
+- Profile dropdown should include profile/settings/logout.
+- Active sidebar route should highlight based on current page.
+- Use reusable components/includes if possible:
+  - header.php
+  - sidebar.php
+  - footer.php
+  - auth_check.php
+  - db.php
+
+Functionality requirements:
+- All dashboard cards should show real numbers.
+- All sidebar buttons should route to actual pages.
+- All view buttons should open correct pages.
+- Continue Learning button should open selected course lesson page or course details page.
+- View All buttons should open list pages.
+- Search bar should filter courses/materials/pages where possible.
+- Calendar should show real current month or at least dynamic dates.
+- Notifications/messages should show data if available.
+- Profile settings should allow updating name, email, profile image, and password if already supported.
+- Logout must work.
+- No broken links.
+- No placeholder buttons that do nothing.
+- Console should have no JavaScript errors.
+- PHP should have no undefined variable warnings.
+- Pages should not break when database tables are empty; show empty-state messages.
+
+Security requirements:
+- Use prepared statements.
+- Escape output using htmlspecialchars.
+- Validate user input.
+- Protect dashboards with sessions.
+- Protect role-based pages.
+- Do not expose passwords.
+- Do not store plain text passwords.
+- Use CSRF protection for important forms if possible.
+- Validate uploaded files if profile image or assignment upload exists.
+
+Code quality requirements:
+- Do not remove existing working pages unless necessary.
+- Do not break the home page, course page, login page, or register page.
+- Reuse existing CSS/theme where possible.
+- Organize code clearly.
+- Add comments only where helpful.
+- Keep filenames logical.
+- Avoid duplicate code.
+- Make the dashboard easy to extend later.
+
+Testing checklist:
+After completing changes, test these cases:
+1. Register a new student.
+2. Login as that student.
+3. Confirm dashboard shows that student’s real name.
+4. Confirm dashboard does not show hardcoded “Amit Sharma” unless that is the logged-in user.
+5. Confirm enrolled courses show only for that student.
+6. Login as another student and confirm different data appears.
+7. Login as trainer and confirm trainer dashboard appears.
+8. Trainer should not access admin dashboard.
+9. Student should not access admin/trainer dashboard.
+10. Admin should access admin dashboard.
+11. Logout should destroy session.
+12. Refreshing dashboard should keep logged-in state.
+13. Empty database sections should show clean messages, not errors.
+14. Sidebar links should all open pages.
+15. Dashboard should be responsive.
+16. No broken image paths.
+17. No console errors.
+18. No PHP errors.
+
+Visual reference:
+Use the uploaded dashboard reference image as the layout inspiration. The final user, trainer, and admin dashboards should have a similar clean LMS dashboard feel:
+- dark sidebar
+- blue active button
+- white content cards
+- stat cards
+- course progress cards
+- deadlines section
+- announcements
+- activities
+- profile section
+- clean professional layout
+
+Very important:
+Do not create only frontend static UI. The main goal is to fix the backend integration so that the login credentials determine which dashboard and which data appears. The user dashboard must be dynamic and personalized to the logged-in user. The trainer and admin dashboards must also be dynamic and role-specific.
+
+Before editing:
+First inspect the existing folder structure, database connection files, login/register files, session logic, and dashboard files. Then make the necessary changes carefully.
+
+Final output:
+After finishing, provide:
+- A summary of all files changed
+- Any new files created
+- Any database SQL changes needed
+- Steps to run the project
+- Test login details if you created dummy users
+- Explanation of how role-based redirection works
+
+c:\Users\Akshat Arya\Downloads\WhatsApp Image 2026-06-09 at 11.47.24.jpeg

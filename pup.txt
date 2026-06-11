@@ -1,0 +1,406 @@
+You are working on my existing LMS website located in XAMPP.
+
+Project path example:
+C:\xampp\htdocs\LMS
+
+The previous changes were implemented, but now some Admin Panel sections/pages are showing errors.
+
+Important:
+Do not redesign the website.
+Do not rebuild the project.
+Do not remove any current working features.
+Do not break login, register, admin panel, trainer panel, user panel, frontend home page, courses, webinars, testimonials, FAQ, media gallery, certificates, popups, or previous fixes.
+Only debug and fix the exact issues listed below.
+
+==================================================
+TASK 1: FIX “UNKNOWN LMS RESOURCE” ERRORS IN ADMIN PANEL
+========================================================
+
+Current problem:
+Some newly added Admin Panel pages are showing:
+
+Unknown LMS resource
+
+Required fix:
+
+* Inspect the Admin Panel sidebar/menu links.
+* Inspect the route handling system.
+* Inspect:
+  Backend\includes\cms_extra_routes.php
+  Backend\includes\Core\Router.php
+  Backend\public\index.php
+* Find why some Admin Panel resource routes are not registered correctly.
+* Make sure all Admin Panel resources have valid routes.
+* The route names used in sidebar/menu must exactly match the resource names handled in the backend router.
+* Fix broken routes for newly added resources such as:
+
+  * certificates
+  * announcements
+  * assignments
+  * batches
+  * popups
+  * testimonials
+  * webinars
+  * FAQs
+  * media gallery
+  * trusted partners
+  * any other newly added CMS/admin resource
+
+Expected behavior:
+
+* Clicking any Admin Panel menu item should open the correct page.
+* No Admin Panel page should show “Unknown LMS resource” if that resource exists.
+* If a resource genuinely does not exist, show a clean admin-friendly error page instead of a raw message.
+* Do not expose backend errors to normal users.
+
+Important:
+Do not hardcode random routes.
+Follow the existing routing pattern of the project.
+
+==================================================
+TASK 2: FIX FATAL PDO ERROR IN CERTIFICATES PAGE
+================================================
+
+Current fatal error:
+
+Fatal error: Uncaught PDOException:
+SQLSTATE[42S22]: Column not found: 1054 Unknown column 'ce.title' in 'field list'
+in C:\xampp\htdocs\LMS\Backend\includes\cms_extra_routes.php on line 272
+
+Current broken query seems to reference:
+ce.title
+
+Problem:
+The certificates table or certificate alias `ce` does not have a column named `title`.
+
+Required fix:
+
+* Inspect the actual database schema.
+* Inspect the certificates table columns.
+* Inspect all certificate-related queries in:
+  Backend\includes\cms_extra_routes.php
+* Do not assume column names.
+* Use the real existing column names from the database.
+* If the certificates table has a field like:
+  certificate_title
+  certificate_name
+  name
+  course_name
+  title_text
+  then update the query to use the correct field.
+* If the title field is actually needed but missing, add a safe database migration:
+  ALTER TABLE certificates ADD COLUMN title VARCHAR(255) NULL;
+* Only add a new column if it is truly needed and does not duplicate an existing correct column.
+
+Required backend safety:
+
+* Replace direct fragile SELECT queries with safe checks where needed.
+* Avoid queries that reference non-existing columns.
+* Use aliases correctly.
+* Add fallback values if optional fields are missing.
+* Handle empty certificate records cleanly.
+* The certificates Admin Panel page must load without fatal errors.
+* Admin should be able to add, edit, view, and delete certificates normally.
+
+Important:
+
+* Do not disable the certificate page.
+* Do not remove certificate functionality.
+* Fix the real schema/query mismatch properly.
+
+==================================================
+TASK 3: PREVENT RAW PHP/PDO ERRORS FROM SHOWING ON SCREEN
+=========================================================
+
+Current problem:
+Raw PHP fatal errors are being shown directly in the browser.
+
+Required fix:
+
+* Add safe error handling around CMS resource queries.
+* Admin pages should not crash the entire site due to one query.
+* If a database issue happens, show a clean message inside the Admin Panel like:
+  “Unable to load this section. Please check the database configuration.”
+* Log the technical error if the project has a logging system.
+* During development, errors can be logged, but the user-facing UI should not show raw stack traces.
+
+Important:
+Do not hide the actual bug without fixing it.
+First fix the certificate query issue, then add safer handling.
+
+==================================================
+TASK 4: RENAME ADMIN PANEL SECTION TO “POP UPS”
+===============================================
+
+Current issue:
+The newly added Admin Panel section is named:
+Home Popup Management
+
+Required change:
+Rename it everywhere in the Admin Panel UI to:
+
+Pop ups
+
+Apply the name change in:
+
+* Admin sidebar/menu
+* Page heading
+* Breadcrumbs if available
+* Add button text if needed
+* List/table heading if needed
+
+Expected wording examples:
+
+* Sidebar: Pop ups
+* Page title: Pop ups
+* Button: Add Pop up
+* Edit page: Edit Pop up
+
+Important:
+Do not rename database tables unnecessarily unless needed.
+This is mainly a UI naming change.
+
+==================================================
+TASK 5: IMPROVE POP UPS FEATURE WITH PAGE SELECTION
+===================================================
+
+Current requirement:
+The Pop ups feature should allow Admin to select where the popup will appear and on which page it is being created.
+
+Required implementation:
+In the Pop ups add/edit form, add fields for:
+
+1. Popup Title
+2. Popup Message/Description
+3. Popup Image upload if already supported
+4. Button Text
+5. Button Link
+6. Status
+7. Page Location / Display Page
+8. Popup Position if useful
+
+Page selection field:
+Admin should be able to choose where the popup appears.
+
+Suggested options:
+
+* Home Page
+* Courses Page
+* Webinar Page
+* Media Gallery Page
+* About Page
+* Contact Page
+* All Pages
+
+Use the actual pages/routes that exist in my LMS project.
+Do not add fake page options if those pages do not exist.
+
+Status options:
+
+* Active
+* Inactive
+* Draft
+
+Popup position options if useful:
+
+* Center
+* Top
+* Bottom
+* Bottom Right
+* Bottom Left
+
+Database:
+If the popups table already has a page/location field, use it.
+If not, add a safe column:
+page_key VARCHAR(100) DEFAULT 'home'
+
+If position is implemented:
+position VARCHAR(50) DEFAULT 'center'
+
+Expected frontend behavior:
+
+* A popup marked for Home Page should show only on Home Page.
+* A popup marked for Courses Page should show only on Courses Page.
+* A popup marked for Webinar Page should show only on Webinar Page.
+* A popup marked for All Pages should show on all allowed frontend pages.
+* Inactive or Draft popups should not show publicly.
+* Only Active popups should show.
+* If start date/end date fields already exist, respect them.
+* Popup should have a close button.
+* Popup should not show broken images.
+* Popup should not permanently block the page.
+* Use existing popup design and style.
+
+Important:
+
+* Do not show every popup everywhere.
+* Do not hardcode popup content.
+* Fetch popup data dynamically from database according to the current page.
+
+==================================================
+TASK 6: FIX TESTIMONIAL SECTION LAYOUT ON HOME PAGE
+===================================================
+
+Current requirement:
+In the testimonials section, the logo/profile picture should be centered.
+The name and post/designation should be under the profile picture and centered.
+Then the review/testimonial text should appear below that.
+
+Required layout order in each testimonial card:
+
+1. Profile picture / logo in the middle
+2. Name centered under image
+3. Post/designation centered under name
+4. Review/testimonial text below
+5. Rating if already available, placed neatly according to existing design
+
+Required styling:
+
+* Profile picture should be centered horizontally.
+* Profile picture should be circular if the existing design supports it.
+* Use:
+  object-fit: cover;
+  object-position: center;
+* Name should be centered.
+* Post/designation should be centered.
+* Testimonial text/review should appear below the name and post.
+* Keep card spacing clean.
+* Keep existing colors, fonts, and card style.
+* Do not redesign the full testimonial section.
+* Do not change unrelated home page sections.
+
+Profile image fallback:
+
+* If no profile image exists, show a clean default avatar or initials.
+* Do not show broken image icons.
+
+Expected result:
+Each testimonial card should look like:
+
+[Centered Profile Image]
+
+Name
+Post / Designation
+
+Review text goes here...
+
+==================================================
+TASK 7: CHECK TESTIMONIAL IMAGE PATH AGAIN
+==========================================
+
+Previous issue:
+The testimonial logo/profile image was not showing on the Home Page.
+
+Required check:
+
+* Re-check testimonial upload path.
+* Re-check database stored image path.
+* Re-check frontend image src path.
+* Fix relative path issues.
+* Make sure images work when project runs from:
+  http://localhost/LMS/
+* Do not use absolute local Windows paths.
+* Use web-accessible relative paths such as:
+  uploads/testimonials/image-name.jpg
+  or the correct project helper path.
+
+Expected behavior:
+
+* Testimonial profile picture displays correctly on Home Page.
+* No broken image icon.
+* Image remains centered.
+
+==================================================
+GENERAL IMPLEMENTATION RULES
+============================
+
+Before editing:
+
+* Inspect the actual database tables and columns.
+* Inspect the actual route structure.
+* Inspect existing Admin Panel naming conventions.
+* Inspect existing CMS resource system.
+* Inspect testimonial frontend layout.
+* Inspect popup frontend logic.
+
+Do not:
+
+* Rebuild the LMS.
+* Replace the Admin Panel.
+* Break previous working changes.
+* Break the database connection.
+* Break login/session/logout.
+* Break trainer or user panel.
+* Break frontend home page sections.
+* Break certificate CRUD.
+* Break popup CRUD.
+* Break testimonial CRUD.
+* Hardcode database data.
+* Use dummy data where database records exist.
+* Rename tables randomly.
+* Delete existing records.
+* Remove existing sidebar links unless they are duplicates or broken.
+
+Use:
+
+* Existing coding style.
+* Existing database connection.
+* Existing route system.
+* Existing upload system.
+* Existing Admin Panel UI style.
+* Prepared statements or existing safe database method.
+* Safe migrations only if required.
+
+==================================================
+TESTING CHECKLIST
+=================
+
+After implementation, verify:
+
+Routing:
+
+* No valid Admin Panel section shows “Unknown LMS resource”.
+* Sidebar links open correct pages.
+* Routes match resource names correctly.
+
+Certificates:
+
+* Certificates page opens without fatal error.
+* No query references missing column `ce.title`.
+* Certificate list loads correctly.
+* Certificate add/edit/delete still works.
+* Existing certificate data still appears.
+
+Pop ups:
+
+* Admin Panel section is named “Pop ups”.
+* Admin can add Pop up.
+* Admin can edit Pop up.
+* Admin can delete Pop up.
+* Admin can select page/location for popup.
+* Popup appears only on the selected page.
+* Popup marked “All Pages” appears globally.
+* Inactive/Draft popup does not show publicly.
+* Popup close button works.
+
+Testimonials:
+
+* Testimonial image/logo appears on Home Page.
+* Testimonial image/logo is centered.
+* Name is centered below image.
+* Post/designation is centered below name.
+* Review text appears below name and post.
+* No broken image icons.
+* Existing testimonial styling remains clean.
+
+Error Handling:
+
+* No raw PHP fatal errors display on browser.
+* No PDO stack trace appears on screen.
+* Admin pages show clean messages if something fails.
+* No console errors.
+* No PHP warnings.
+* No MySQL errors.
+
+Final result:
+Fix the route/resource errors, fix the certificate SQL column issue, rename the popup section to “Pop ups”, allow page-wise popup placement, and clean up the testimonial card layout without changing anything else in the LMS.

@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EEPL Admin Panel</title>
+  <meta name="robots" content="noindex, nofollow">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../assets/css/messages.css">
+  <link rel="stylesheet" href="admin.css">
+</head>
+<body class="admin-body">
+
+  <!-- ===== LOGIN PAGE ===== -->
+  <div id="login-page" class="login-page hidden">
+    <div class="login-card">
+      <div class="login-logo">
+        <div class="login-logo-icon">⚡</div>
+        <h1>EEPL Admin</h1>
+        <p>Sign in to manage your LMS</p>
+      </div>
+      <form id="login-form" class="login-form">
+        <div class="form-group">
+          <label for="login-email">Email Address</label>
+          <input type="email" id="login-email" placeholder="admin@eepl.in" required autocomplete="username">
+        </div>
+        <div class="form-group">
+          <label for="login-password">Password</label>
+          <input type="password" id="login-password" placeholder="••••••••" required autocomplete="current-password">
+        </div>
+        <div id="login-error" class="login-error hidden"></div>
+        <button type="submit" id="login-btn" class="btn-login">
+          <span id="login-btn-text">Sign In</span>
+          <span id="login-btn-spinner" class="spinner hidden"></span>
+        </button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN APP ===== -->
+  <div id="admin-app" class="admin-app hidden">
+
+    <!-- SIDEBAR -->
+    <aside class="sidebar" id="sidebar">
+      <div class="sidebar-header">
+        <div class="sidebar-logo">⚡ EEPL Admin</div>
+        <button class="sidebar-close" id="sidebar-close">✕</button>
+      </div>
+      <nav class="sidebar-nav">
+        <div class="nav-section-label">Overview</div>
+        <a href="#" class="nav-item active" data-page="dashboard" id="nav-dashboard">
+          <span class="nav-icon">📊</span> Dashboard
+        </a>
+
+        <div class="nav-section-label">LMS Management</div>
+        <a href="#" class="nav-item" data-page="lms-users"><span class="nav-icon">👨‍🎓</span> Manage Users</a>
+        <a href="#" class="nav-item" data-page="lms-trainers"><span class="nav-icon">🧑‍🏫</span> Manage Trainers</a>
+        <a href="#" class="nav-item" data-page="courses"><span class="nav-icon">📚</span> Manage Courses</a>
+        <a href="#" class="nav-item" data-page="lms-batches"><span class="nav-icon">▣</span> Manage Batches</a>
+        <a href="#" class="nav-item" data-page="lms-enrollments"><span class="nav-icon">📋</span> Enrollments</a>
+        <a href="#" class="nav-item" data-page="lms-assignments"><span class="nav-icon">☷</span> Assignments</a>
+        <a href="#" class="nav-item" data-page="lms-assessments"><span class="nav-icon">✓</span> Assessments</a>
+        <a href="#" class="nav-item" data-page="lms-certificates"><span class="nav-icon">🏆</span> Certificates</a>
+        <a href="#" class="nav-item" data-page="lms-materials"><span class="nav-icon">▧</span> Study Materials</a>
+        <a href="#" class="nav-item" data-page="lms-payments"><span class="nav-icon">₹</span> Payments</a>
+        <a href="#" class="nav-item" data-page="lms-messages"><span class="nav-icon">✉</span> Messages</a>
+        <a href="#" class="nav-item" data-page="lms-announcements"><span class="nav-icon">◇</span> Announcements</a>
+        <a href="#" class="nav-item" data-page="lms-reports"><span class="nav-icon">📈</span> Reports</a>
+
+        <div class="nav-section-label">Website</div>
+        <a href="#" class="nav-item" data-page="home-editor" id="nav-home-editor">
+          <span class="nav-icon">🏠</span> Home Editor
+        </a>
+        <a href="#" class="nav-item" data-page="home-popups" id="nav-home-popups">
+          <span class="nav-icon">POP</span> Pop ups
+        </a>
+        <a href="#" class="nav-item" data-page="trusted-by" id="nav-trusted-by">
+          <span class="nav-icon">🤝</span> Trusted By
+        </a>
+        <a href="#" class="nav-item" data-page="testimonials" id="nav-testimonials">
+          <span class="nav-icon">⭐</span> Testimonials
+        </a>
+        <a href="#" class="nav-item" data-page="faqs" id="nav-faqs">
+          <span class="nav-icon">❓</span> FAQs
+        </a>
+        <a href="#" class="nav-item" data-page="counters" id="nav-counters">
+          <span class="nav-icon">📈</span> Stats / Counters
+        </a>
+        <a href="#" class="nav-item" data-page="navigation-menu" id="nav-navigation-menu">
+          <span class="nav-icon">🔗</span> Navigation Menu
+        </a>
+
+        <div class="nav-section-label">Content</div>
+        <a href="#" class="nav-item" data-page="course-categories" id="nav-course-categories">
+          <span class="nav-icon">🗂</span> Course Categories
+        </a>
+        <a href="#" class="nav-item" data-page="webinars" id="nav-webinars">
+          <span class="nav-icon">🎥</span> Webinars
+        </a>
+        <a href="#" class="nav-item" data-page="posts" id="nav-posts">
+          <span class="nav-icon">📝</span> Blogs & Articles
+        </a>
+
+        <div class="nav-section-label">System</div>
+        <a href="#" class="nav-item" data-page="media" id="nav-media">
+          <span class="nav-icon">🖼</span> Media Library
+        </a>
+        <a href="#" class="nav-item" data-page="contact-leads" id="nav-contact-leads">
+          <span class="nav-icon">📩</span> Contact Leads
+        </a>
+        <a href="#" class="nav-item" data-page="settings" id="nav-settings">
+          <span class="nav-icon">⚙️</span> Settings
+        </a>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-logout" id="logout-btn">🚪 Sign Out</button>
+      </div>
+    </aside>
+
+    <!-- MAIN CONTENT -->
+    <div class="admin-main">
+      <!-- TOP BAR -->
+      <header class="topbar">
+        <button class="topbar-menu-btn" id="topbar-menu-btn">☰</button>
+        <div class="topbar-title" id="topbar-title">Dashboard</div>
+        <div class="topbar-search">
+          <span class="topbar-search-icon">⌕</span>
+          <input type="search" id="admin-global-search" placeholder="Search admin pages..." autocomplete="off">
+          <kbd>Ctrl /</kbd>
+        </div>
+        <div class="topbar-right">
+          <button class="topbar-icon-btn" id="admin-notifications" type="button" aria-label="Notifications">♧<span>3</span></button>
+          <button class="topbar-icon-btn" id="admin-messages" type="button" aria-label="Messages">✉<span>1</span></button>
+          <div class="topbar-admin" id="topbar-admin">
+            <div class="topbar-avatar">A</div>
+            <span id="topbar-admin-name">Admin</span>
+          </div>
+        </div>
+      </header>
+
+      <!-- PAGE CONTENT -->
+      <main class="admin-content" id="admin-content">
+        <!-- Populated by JS -->
+      </main>
+    </div>
+  </div>
+
+  <!-- ===== GLOBAL MODAL ===== -->
+  <div id="modal-overlay" class="modal-overlay hidden">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h3 id="modal-title">Modal</h3>
+        <button class="modal-close" id="modal-close">✕</button>
+      </div>
+      <div class="modal-body" id="modal-body"><!-- dynamic --></div>
+      <div class="modal-footer" id="modal-footer">
+        <button class="btn-secondary" id="modal-cancel">Cancel</button>
+        <button class="btn-primary" id="modal-confirm">Save</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- ===== TOAST ===== -->
+  <div id="toast" class="toast hidden"></div>
+
+  <script src="../assets/js/messages.js"></script>
+  <script src="admin.js"></script>
+</body>
+</html>

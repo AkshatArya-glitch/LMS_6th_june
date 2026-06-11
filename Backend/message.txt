@@ -1,0 +1,362 @@
+I have an existing LMS website with frontend and backend already created. The website has three separate login panels and dashboards:
+
+1. Admin Panel
+2. User/Student Panel
+3. Trainer Panel
+
+The dashboards and UI are already mostly ready, so do not redesign the whole website. Keep the existing UI, layout, colors, sidebar, navbar, cards, buttons, fonts, and existing functionalities exactly as they are. Only add and integrate a fully working messaging system between all three roles.
+
+The goal is to make the “Messages” section functional for Admin, User, and Trainer panels so that each role can communicate with the other roles properly.
+
+PROJECT REQUIREMENT:
+
+Create a complete role-based messaging system where:
+
+User/Student can:
+
+* Message Admin regarding queries, support, payment, enrollment, certificates, course issues, etc.
+* Message Trainer regarding course doubts, assignments, lectures, materials, quizzes, and learning support.
+* View replies from Admin and Trainer.
+* Continue conversations in a clean chat/thread format.
+* See unread message count.
+* See message timestamps.
+* Search conversations if possible.
+* Mark messages as read after opening them.
+
+Trainer can:
+
+* Message Admin for management-related queries, course approvals, student issues, content upload permissions, etc.
+* Message Users/Students assigned to their courses.
+* Reply to student doubts.
+* View all student conversations.
+* See unread messages.
+* Search users or conversations.
+* Continue conversations in a proper chat thread.
+
+Admin can:
+
+* Message Users/Students.
+* Message Trainers.
+* View all conversations happening in the system if required.
+* Reply to any user or trainer query.
+* Manage support messages.
+* See unread message count.
+* Filter conversations by role: User, Trainer, Admin.
+* Search conversations by name, email, subject, or message content.
+
+IMPORTANT UI REQUIREMENTS:
+
+1. Keep the existing dashboard design.
+2. Do not replace the current dashboard UI.
+3. Add the messaging section inside the existing dashboard structure.
+4. The messaging page should look similar across Admin, User, and Trainer panels.
+5. Use the same sidebar/navbar style already used in the project.
+6. The Messages button in each dashboard sidebar should open the new messaging page.
+7. The design should be modern, clean, professional, and responsive.
+8. The messaging interface should include:
+
+   * Left side conversation list
+   * Right side chat/message area
+   * Search bar
+   * New Message button
+   * Message input box
+   * Send button
+   * Role badges such as Admin, Trainer, User
+   * Timestamps
+   * Unread count
+   * Empty state when no conversation is selected
+   * Loading state when messages are being fetched
+   * Error state if message sending fails
+
+MESSAGING PAGE STRUCTURE:
+
+For User Dashboard:
+Create a Messages section with separate tabs or buttons:
+
+1. Message Admin
+2. Message Trainer
+3. Inbox
+4. Sent Messages
+
+User should only be able to message:
+
+* Admin
+* Trainers connected to enrolled courses
+
+User should not be able to message other users.
+
+For Trainer Dashboard:
+Create a Messages section with separate tabs or buttons:
+
+1. Message Admin
+2. Message Students
+3. Inbox
+4. Sent Messages
+
+Trainer should only be able to message:
+
+* Admin
+* Students enrolled in their assigned courses
+
+Trainer should not message unrelated users unless allowed by Admin.
+
+For Admin Dashboard:
+Create a Messages section with separate tabs or buttons:
+
+1. Message Users
+2. Message Trainers
+3. All Conversations
+4. Support Queries
+5. Inbox
+6. Sent Messages
+
+Admin should be able to message:
+
+* Any user/student
+* Any trainer
+
+Admin should also be able to view and manage all conversations.
+
+DATABASE REQUIREMENTS:
+
+Create or update the database tables needed for messaging.
+
+Suggested table: messages
+
+Fields:
+
+* id INT AUTO_INCREMENT PRIMARY KEY
+* sender_id INT NOT NULL
+* sender_role ENUM('admin','user','trainer') NOT NULL
+* receiver_id INT NOT NULL
+* receiver_role ENUM('admin','user','trainer') NOT NULL
+* subject VARCHAR(255)
+* message TEXT NOT NULL
+* conversation_id VARCHAR(100) NOT NULL
+* is_read TINYINT(1) DEFAULT 0
+* created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+* updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+
+Suggested table: conversations
+
+Fields:
+
+* id INT AUTO_INCREMENT PRIMARY KEY
+* conversation_id VARCHAR(100) UNIQUE NOT NULL
+* participant_one_id INT NOT NULL
+* participant_one_role ENUM('admin','user','trainer') NOT NULL
+* participant_two_id INT NOT NULL
+* participant_two_role ENUM('admin','user','trainer') NOT NULL
+* subject VARCHAR(255)
+* last_message TEXT
+* last_message_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+* created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+
+If my existing database already has users/admins/trainers tables, connect the messaging system with those existing tables instead of creating duplicate user tables.
+
+BACKEND FUNCTIONALITY:
+
+Implement backend logic for:
+
+1. Sending a message
+2. Fetching inbox messages
+3. Fetching sent messages
+4. Fetching conversation threads
+5. Marking messages as read
+6. Counting unread messages
+7. Searching conversations
+8. Filtering messages by role
+9. Starting a new conversation
+10. Replying to an existing conversation
+11. Preventing unauthorized messaging between roles
+12. Preventing users from accessing conversations they are not part of
+
+ROLE-BASED ACCESS RULES:
+
+Admin:
+
+* Can message everyone.
+* Can see all conversations if needed.
+* Can reply to all queries.
+* Can filter messages by users/trainers.
+
+User:
+
+* Can message Admin.
+* Can message assigned/enrolled-course Trainers.
+* Can only view their own conversations.
+* Cannot view other users’ messages.
+
+Trainer:
+
+* Can message Admin.
+* Can message assigned students.
+* Can only view their own conversations unless Admin gives extra access.
+* Cannot view unrelated student messages.
+
+SECURITY REQUIREMENTS:
+
+1. Use session-based authentication.
+2. Use the currently logged-in user’s session ID and role for sender details.
+3. Never trust sender_id from the frontend.
+4. Validate receiver role and receiver ID on the backend.
+5. Prevent SQL injection using prepared statements.
+6. Escape message output to prevent XSS.
+7. Do not allow empty messages.
+8. Limit message length if needed.
+9. Check that the logged-in user has permission to message the selected receiver.
+10. Only show conversations where the logged-in user is a participant, except Admin if Admin has full access.
+
+FRONTEND FUNCTIONALITY:
+
+Add working frontend features:
+
+1. Clicking “Messages” in sidebar opens the messaging page.
+2. Clicking “New Message” opens a modal or form.
+3. User can choose receiver based on role permissions.
+4. User can type subject and message.
+5. Clicking Send stores the message in the database.
+6. Conversation list updates after sending.
+7. Clicking a conversation loads the full chat thread.
+8. Replies appear under the same conversation.
+9. Unread messages should be highlighted.
+10. Message timestamps should be visible.
+11. Show sender name, role, and message content.
+12. The UI should work on desktop and mobile.
+13. Use AJAX/fetch where possible so the page feels smooth.
+14. Add success and error notifications.
+
+MESSAGE INTERFACE DESIGN:
+
+The messaging page should have this layout:
+
+Left Panel:
+
+* Search bar
+* New Message button
+* Conversation list
+* Each conversation card should show:
+
+  * Receiver/sender name
+  * Role badge
+  * Subject
+  * Last message preview
+  * Timestamp
+  * Unread indicator
+
+Right Panel:
+
+* Selected conversation header
+* Participant name and role
+* Chat thread
+* Messages aligned left/right depending on sender
+* Timestamp under each message
+* Reply input box
+* Send button
+
+New Message Modal/Form:
+
+* Select receiver role
+* Select receiver name
+* Subject field
+* Message textarea
+* Send button
+* Cancel button
+
+ADMIN-SPECIFIC DESIGN:
+
+In Admin dashboard Messages section, add filters:
+
+* All
+* Users
+* Trainers
+* Unread
+* Support Queries
+
+Admin should also have a “Start New Conversation” button with:
+
+* Select role: User or Trainer
+* Select specific person
+* Subject
+* Message
+
+USER-SPECIFIC DESIGN:
+
+In User dashboard Messages section, add quick buttons:
+
+* Contact Admin
+* Contact Trainer
+* My Inbox
+* Sent
+
+When selecting Trainer, only show trainers connected to the user’s enrolled courses.
+
+TRAINER-SPECIFIC DESIGN:
+
+In Trainer dashboard Messages section, add quick buttons:
+
+* Contact Admin
+* Message Student
+* Inbox
+* Sent
+
+When selecting Student, only show students enrolled in trainer’s courses.
+
+INTEGRATION REQUIREMENTS:
+
+1. Do not break existing login/register functionality.
+2. Do not break existing dashboards.
+3. Do not remove any existing features.
+4. Reuse the current project’s header, sidebar, footer, and theme.
+5. Add Messages page files in the correct existing folder structure.
+6. Update sidebar links for Admin, User, and Trainer dashboards.
+7. Connect the system to the existing database connection file.
+8. Use the existing session/authentication system.
+9. Use existing user/admin/trainer IDs from session.
+10. Make sure all code is clean, organized, and commented.
+
+FILES TO CREATE OR UPDATE:
+
+Depending on the existing structure, create/update files similar to:
+
+Frontend:
+
+* admin/messages.php
+* user/messages.php
+* trainer/messages.php
+* assets/css/messages.css
+* assets/js/messages.js
+
+Backend/API:
+
+* api/send_message.php
+* api/get_conversations.php
+* api/get_messages.php
+* api/mark_as_read.php
+* api/get_receivers.php
+* api/unread_count.php
+
+Database:
+
+* database/messaging_tables.sql
+
+If the project already uses a different structure, follow the existing structure instead of forcing this exact structure.
+
+EXPECTED FINAL RESULT:
+
+After implementation:
+
+1. Admin, User, and Trainer dashboards should each have a working Messages section.
+2. Users can send queries to Admin and Trainers.
+3. Trainers can reply to Users and message Admin.
+4. Admin can message Users and Trainers.
+5. All messages should be saved in the database.
+6. Conversations should load dynamically.
+7. Replies should stay inside the correct conversation thread.
+8. Unread messages should be shown clearly.
+9. The UI should match the existing dashboard design.
+10. The system should be secure, role-based, responsive, and fully functional.
+
+IMPORTANT:
+
+Do not create a static messaging UI only. The messaging system must be connected to backend and database. Every button related to messaging should work. Keep the existing UI and all current functionalities untouched. Only add the new messaging functionality cleanly and professionally.
