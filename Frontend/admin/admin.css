@@ -331,6 +331,179 @@ select.form-control { cursor: pointer; }
 }
 .media-thumb:hover .media-del { display: flex; }
 
+.gallery-search {
+  width: min(280px, 100%);
+}
+
+.gallery-admin-table {
+  min-width: 760px;
+}
+
+.gallery-image-cell {
+  width: 116px;
+}
+
+.gallery-image-cell img {
+  display: block;
+  width: 92px;
+  height: 64px;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  object-fit: cover;
+  background: var(--surface2);
+}
+
+.gallery-active-toggle {
+  min-height: 42px;
+}
+
+.gallery-actions {
+  min-width: 240px;
+}
+
+.courses-page-header {
+  margin-bottom: 28px;
+}
+
+.courses-table-wrap {
+  padding-bottom: 4px;
+}
+
+.admin-courses-table {
+  min-width: 1220px;
+  table-layout: auto;
+}
+
+.admin-courses-table th,
+.admin-courses-table td {
+  white-space: nowrap;
+}
+
+.admin-courses-table td:first-child {
+  min-width: 250px;
+  max-width: 320px;
+}
+
+.admin-courses-table td:first-child > div,
+.admin-courses-table td:first-child > div > div {
+  min-width: 0;
+}
+
+.admin-courses-table td:first-child > div > div > div:first-child {
+  max-width: 220px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-courses-table td:nth-child(2) {
+  min-width: 130px;
+}
+
+.admin-courses-table td:nth-child(3) {
+  max-width: 170px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.admin-courses-table td:nth-child(4) {
+  min-width: 125px;
+}
+
+.admin-courses-table .admin-price-stack {
+  white-space: nowrap;
+}
+
+.admin-courses-table td:last-child > div {
+  min-width: 235px;
+  flex-wrap: nowrap;
+}
+
+.popup-page-header {
+  margin-bottom: 28px;
+}
+
+.popup-table-wrap {
+  padding-bottom: 4px;
+}
+
+.admin-popups-table {
+  min-width: 1120px;
+  table-layout: auto;
+}
+
+.admin-popups-table th,
+.admin-popups-table td {
+  white-space: nowrap;
+}
+
+.popup-summary-cell {
+  min-width: 280px;
+  max-width: 340px;
+}
+
+.popup-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 0;
+}
+
+.popup-summary .td-img {
+  flex: 0 0 44px;
+}
+
+.popup-copy {
+  min-width: 0;
+}
+
+.popup-title,
+.popup-message {
+  display: block;
+  max-width: 245px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.popup-message {
+  margin-top: 4px;
+  font-size: 12px;
+}
+
+.popup-page-cell {
+  min-width: 145px;
+}
+
+.popup-position-cell {
+  min-width: 120px;
+}
+
+.popup-type-cell {
+  min-width: 155px;
+  text-transform: capitalize;
+}
+
+.popup-schedule-cell {
+  min-width: 220px;
+  line-height: 1.55;
+}
+
+.popup-actions {
+  min-width: 178px;
+  flex-wrap: nowrap;
+}
+
+.popup-actions .btn-icon,
+.popup-actions .btn-danger,
+.popup-page-header .btn-primary {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex: 0 0 auto;
+  white-space: nowrap;
+}
+
 /* ── MODAL ── */
 .modal-overlay {
   position: fixed; inset: 0; background: rgba(0,0,0,.65); z-index: 500;
@@ -757,5 +930,279 @@ select.form-control { cursor: pointer; }
   .dashboard-detail-grid,
   .dashboard-quick-grid {
     grid-template-columns: 1fr;
+  }
+}
+
+/* Shared layout containment and local icon fallback */
+html,
+body.admin-body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-app {
+  width: 100%;
+  min-width: 0;
+}
+
+.sidebar {
+  height: 100vh;
+  height: 100dvh;
+}
+
+.admin-main {
+  width: calc(100% - var(--sidebar-w));
+  min-width: 0;
+  min-height: 100vh;
+}
+
+.topbar {
+  flex: 0 0 auto;
+  min-width: 0;
+  gap: 16px;
+}
+
+.topbar-title {
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.topbar-right {
+  flex: 0 0 auto;
+}
+
+.admin-content {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
+.admin-content > *,
+.card,
+.section-block,
+.tab-content,
+.page-header {
+  min-width: 0;
+  max-width: 100%;
+}
+
+.card {
+  overflow-wrap: anywhere;
+}
+
+.table-wrap {
+  width: 100%;
+  max-width: 100%;
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.table-wrap table {
+  min-width: 640px;
+}
+
+.form-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.form-grid-3 {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.modal {
+  max-width: min(580px, calc(100vw - 32px));
+}
+
+.modal-body {
+  min-width: 0;
+}
+
+.card-heading-row {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 18px;
+}
+
+.card-heading-row .card-title {
+  margin-bottom: 4px;
+}
+
+.admin-inline-notice {
+  padding: 14px 16px;
+  border: 1px solid #fde68a;
+  border-radius: var(--radius-sm);
+  color: #92400e;
+  background: #fffbeb;
+  font-size: 13px;
+}
+
+.hero-slide-summary {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  min-width: 230px;
+}
+
+.hero-slide-summary img,
+.hero-slide-placeholder {
+  width: 84px;
+  height: 52px;
+  flex: 0 0 84px;
+  border: 1px solid var(--border);
+  border-radius: 7px;
+  object-fit: cover;
+  background: var(--surface2);
+}
+
+.hero-slide-placeholder {
+  display: grid;
+  place-items: center;
+  color: var(--text-muted);
+  font-size: 10px;
+}
+
+.hero-slide-summary strong,
+.hero-slide-summary span {
+  display: block;
+}
+
+.hero-slide-summary span {
+  margin-top: 3px;
+  color: var(--accent);
+  font-size: 12px;
+}
+
+.table-actions {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  white-space: nowrap;
+}
+
+.admin-icon {
+  width: 1.15em;
+  height: 1.15em;
+  flex: 0 0 auto;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.nav-icon {
+  display: inline-grid;
+  width: 20px;
+  height: 20px;
+  flex: 0 0 20px;
+  place-items: center;
+  font-size: 0;
+}
+
+.nav-icon .admin-icon,
+.topbar-icon-btn .admin-icon,
+.topbar-search-icon .admin-icon {
+  width: 18px;
+  height: 18px;
+}
+
+.btn-logout {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.stat-icon .admin-icon {
+  width: 24px;
+  height: 24px;
+  color: #dc2626;
+}
+
+.dashboard-quick-grid button span {
+  display: inline-grid;
+  place-items: center;
+}
+
+.dashboard-quick-grid button .admin-icon {
+  width: 19px;
+  height: 19px;
+}
+
+#upload-zone > div:first-child .admin-icon {
+  width: 40px;
+  height: 40px;
+  color: var(--accent);
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (max-width: 900px) {
+  .admin-main {
+    width: 100%;
+  }
+
+  .form-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .form-grid-3 {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 600px) {
+  .admin-content {
+    padding: 14px;
+  }
+
+  .card {
+    padding: 18px;
+  }
+
+  .stats-grid,
+  .form-grid-3 {
+    grid-template-columns: 1fr;
+  }
+
+  .card-heading-row {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .card-heading-row .btn-primary {
+    width: 100%;
+  }
+
+  .page-actions,
+  .page-actions > * {
+    width: 100%;
+  }
+
+  .modal-overlay {
+    padding: 10px;
+  }
+
+  .modal-header,
+  .modal-body,
+  .modal-footer {
+    padding-left: 16px;
+    padding-right: 16px;
   }
 }

@@ -23,6 +23,68 @@ function cms_unique_slug($pdo, $table, $baseSlug, $ignoreId = null) {
     }
 }
 
+function cms_valid_public_link($value) {
+    $link = trim((string)$value);
+    if ($link === '') return true;
+    if (preg_match('/[\x00-\x1F\x7F]/', $link)) return false;
+    if (preg_match('#^https?://#i', $link)) return filter_var($link, FILTER_VALIDATE_URL) !== false;
+    if (strpos($link, ':') !== false || strpos($link, '\\') !== false) return false;
+    return preg_match('!^(?:/|#|\./|\.\./|[a-zA-Z0-9])[a-zA-Z0-9._~/?#=&%+\-]*$!', $link) === 1;
+}
+
+function cms_decode_hero_slide(array $row) {
+    $row['badges'] = !empty($row['badges_json'])
+        ? (json_decode($row['badges_json'], true) ?: [])
+        : [];
+    unset($row['badges_json']);
+    return $row;
+}
+
+function cms_hero_slide_payload(array $input, array $current = []) {
+    $title = trim((string)($input['title'] ?? ($current['title'] ?? '')));
+    if ($title === '') throw new InvalidArgumentException('Slide title is required');
+
+    $sortOrder = $input['sort_order'] ?? ($current['sort_order'] ?? 0);
+    if (!is_numeric($sortOrder)) throw new InvalidArgumentException('Sort order must be numeric');
+
+    $primaryLink = trim((string)($input['primary_button_link'] ?? ($current['primary_button_link'] ?? '')));
+    $secondaryLink = trim((string)($input['secondary_button_link'] ?? ($current['secondary_button_link'] ?? '')));
+    if (!cms_valid_public_link($primaryLink) || !cms_valid_public_link($secondaryLink)) {
+        throw new InvalidArgumentException('Button links must be valid http(s) URLs or relative website links');
+    }
+
+    $badges = $input['badges'] ?? null;
+    if ($badges === null && isset($current['badges_json'])) {
+        $badgesJson = $current['badges_json'];
+    } else {
+        if (!is_array($badges)) $badges = [];
+        $badgesJson = json_encode($badges, JSON_UNESCAPED_UNICODE | JSON_UNESCAPED_SLASHES);
+    }
+
+    return [
+        'title' => substr($title, 0, 255),
+        'accent_text' => substr(trim((string)($input['accent_text'] ?? ($current['accent_text'] ?? ''))), 0, 255),
+        'description' => trim((string)($input['description'] ?? ($current['description'] ?? ''))),
+        'primary_button_text' => substr(trim((string)($input['primary_button_text'] ?? ($current['primary_button_text'] ?? ''))), 0, 100),
+        'primary_button_link' => $primaryLink,
+        'secondary_button_text' => substr(trim((string)($input['secondary_button_text'] ?? ($current['secondary_button_text'] ?? ''))), 0, 100),
+        'secondary_button_link' => $secondaryLink,
+        'image_path' => substr(trim((string)($input['image_path'] ?? ($current['image_path'] ?? ''))), 0, 500),
+        'image_alt' => substr(trim((string)($input['image_alt'] ?? ($current['image_alt'] ?? 'Student learning'))), 0, 255),
+        'badges_json' => $badgesJson,
+        'sort_order' => (int)$sortOrder,
+        'is_active' => array_key_exists('is_active', $input)
+            ? (int)(bool)$input['is_active']
+            : (int)(bool)($current['is_active'] ?? 1),
+    ];
+}
+
+function cms_hero_slides_missing(Throwable $error) {
+    return stripos($error->getMessage(), 'hero_slides') !== false
+        && (stripos($error->getMessage(), 'doesn\'t exist') !== false
+            || stripos($error->getMessage(), 'not found') !== false);
+}
+
 function cms_webinar_storage_status($status) {
     $value = strtolower(trim((string)$status));
     $map = [
@@ -196,6 +258,20 @@ $router->add('GET', '/v1/home/hero', function() {
     $row = $stmt->fetch(PDO::FETCH_ASSOC);
     if ($row && $row['content_json']) $row['content'] = json_decode($row['content_json'], true);
     json_response(['success' => true, 'data' => $row]);
+});
+
+$router->add('GET', '/v1/home/hero-slides', function() {
+    $pdo = db_connect();
+    try {
+        $rows = $pdo->query('SELECT * FROM hero_slides WHERE is_active=1 ORDER BY sort_order ASC, id DESC')->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Throwable $error) {
+        if (cms_hero_slides_missing($error)) {
+            return json_response(['success' => true, 'data' => []]);
+        }
+        error_log('Unable to load hero slides: ' . $error->getMessage());
+        return json_response(['success' => false, 'message' => 'Unable to load hero slides'], 500);
+    }
+    json_response(['success' => true, 'data' => array_map('cms_decode_hero_slide', $rows)]);
 });
 
 $router->add('GET', '/v1/home/popular-courses', function() {
@@ -683,6 +759,7 @@ $router->add('POST', '/v1/admin/media/upload', function() {
         'partners' => 'partner',
         'testimonials' => 'testimonial',
         'popups' => 'popup',
+        'gallery' => 'gallery',
     ];
     $isSectionImage = isset($imageFolders[$folder]);
     $allowedTypes = $isSectionImage
@@ -756,6 +833,59 @@ $router->add('DELETE', '/v1/admin/media/{id}', function($id) {
     json_response(['success' => true]);
 });
 
+$router->add('GET', '/v1/admin/gallery', function() {
+    require_admin();
+    $pdo = db_connect();
+    $rows = $pdo->query(
+        "SELECT id,file_url,file_type,mime_type,size,alt_text,gallery_category AS category,
+                gallery_sort_order AS sort_order,is_active,created_at,updated_at
+         FROM media_assets
+         WHERE file_type='image' AND is_gallery=1
+         ORDER BY gallery_sort_order ASC,id DESC"
+    )->fetchAll(PDO::FETCH_ASSOC);
+    json_response(['success' => true, 'data' => $rows]);
+});
+
+$router->add('PATCH', '/v1/admin/gallery/{id}', function($id) {
+    require_admin();
+    $in = request_json() ?? [];
+    $category = trim((string)($in['category'] ?? ''));
+    $altText = trim((string)($in['alt_text'] ?? ''));
+    $sortOrder = filter_var($in['sort_order'] ?? 0, FILTER_VALIDATE_INT);
+    $isActive = !empty($in['is_active']) ? 1 : 0;
+
+    if ($category === '') {
+        return json_response(['success' => false, 'message' => 'Category is required'], 422);
+    }
+    if (strlen($category) > 100 || strlen($altText) > 255) {
+        return json_response(['success' => false, 'message' => 'Gallery metadata is too long'], 422);
+    }
+    if ($sortOrder === false) {
+        return json_response(['success' => false, 'message' => 'Sort order must be a whole number'], 422);
+    }
+
+    $pdo = db_connect();
+    $stmt = $pdo->prepare(
+        "UPDATE media_assets
+         SET gallery_category=?,gallery_sort_order=?,is_gallery=1,is_active=?,alt_text=?,updated_at=NOW()
+         WHERE id=? AND file_type='image'"
+    );
+    $stmt->execute([$category, $sortOrder, $isActive, $altText, $id]);
+
+    $row = $pdo->prepare(
+        "SELECT id,file_url,file_type,mime_type,size,alt_text,gallery_category AS category,
+                gallery_sort_order AS sort_order,is_active,created_at,updated_at
+         FROM media_assets
+         WHERE id=? AND file_type='image' AND is_gallery=1"
+    );
+    $row->execute([$id]);
+    $galleryItem = $row->fetch(PDO::FETCH_ASSOC);
+    if (!$galleryItem) {
+        return json_response(['success' => false, 'message' => 'Gallery image not found'], 404);
+    }
+    json_response(['success' => true, 'data' => $galleryItem]);
+});
+
 // ================================================================
 // ADMIN API — HOME PAGE SECTION EDITORS
 // ================================================================
@@ -793,6 +923,103 @@ $router->add('PATCH', '/v1/admin/home/hero', function() {
     if (!$pageId) return json_response(['success' => false, 'message' => 'Home page not found'], 404);
     upsert_section($pdo, $pageId, 'hero', $in);
     json_response(['success' => true, 'message' => 'Hero updated']);
+});
+
+$router->add('GET', '/v1/admin/hero-slides', function() {
+    require_admin();
+    $pdo = db_connect();
+    try {
+        $rows = $pdo->query('SELECT * FROM hero_slides ORDER BY sort_order ASC, id DESC')->fetchAll(PDO::FETCH_ASSOC);
+    } catch (Throwable $error) {
+        if (cms_hero_slides_missing($error)) {
+            return json_response([
+                'success' => false,
+                'message' => 'Run Backend/hero_slides_migration.sql before managing hero slides.',
+            ], 503);
+        }
+        throw $error;
+    }
+    json_response(['success' => true, 'data' => array_map('cms_decode_hero_slide', $rows)]);
+});
+
+$router->add('POST', '/v1/admin/hero-slides', function() {
+    require_admin();
+    $input = request_json() ?? [];
+    try {
+        $slide = cms_hero_slide_payload($input);
+    } catch (InvalidArgumentException $error) {
+        return json_response(['success' => false, 'message' => $error->getMessage()], 422);
+    }
+
+    $pdo = db_connect();
+    try {
+        $stmt = $pdo->prepare(
+            'INSERT INTO hero_slides
+             (title,accent_text,description,primary_button_text,primary_button_link,secondary_button_text,secondary_button_link,image_path,image_alt,badges_json,sort_order,is_active)
+             VALUES (?,?,?,?,?,?,?,?,?,?,?,?)'
+        );
+        $stmt->execute(array_values($slide));
+    } catch (Throwable $error) {
+        if (cms_hero_slides_missing($error)) {
+            return json_response(['success' => false, 'message' => 'Run Backend/hero_slides_migration.sql first.'], 503);
+        }
+        throw $error;
+    }
+
+    $id = (int)$pdo->lastInsertId();
+    $row = $pdo->prepare('SELECT * FROM hero_slides WHERE id=?');
+    $row->execute([$id]);
+    json_response(['success' => true, 'data' => cms_decode_hero_slide($row->fetch(PDO::FETCH_ASSOC))], 201);
+});
+
+$router->add('PATCH', '/v1/admin/hero-slides/{id}', function($id) {
+    require_admin();
+    $pdo = db_connect();
+    try {
+        $currentStmt = $pdo->prepare('SELECT * FROM hero_slides WHERE id=?');
+        $currentStmt->execute([(int)$id]);
+        $current = $currentStmt->fetch(PDO::FETCH_ASSOC);
+    } catch (Throwable $error) {
+        if (cms_hero_slides_missing($error)) {
+            return json_response(['success' => false, 'message' => 'Run Backend/hero_slides_migration.sql first.'], 503);
+        }
+        throw $error;
+    }
+    if (!$current) return json_response(['success' => false, 'message' => 'Hero slide not found'], 404);
+
+    try {
+        $slide = cms_hero_slide_payload(request_json() ?? [], $current);
+    } catch (InvalidArgumentException $error) {
+        return json_response(['success' => false, 'message' => $error->getMessage()], 422);
+    }
+
+    $values = array_values($slide);
+    $values[] = (int)$id;
+    $stmt = $pdo->prepare(
+        'UPDATE hero_slides SET
+         title=?,accent_text=?,description=?,primary_button_text=?,primary_button_link=?,secondary_button_text=?,secondary_button_link=?,image_path=?,image_alt=?,badges_json=?,sort_order=?,is_active=?,updated_at=NOW()
+         WHERE id=?'
+    );
+    $stmt->execute($values);
+    $row = $pdo->prepare('SELECT * FROM hero_slides WHERE id=?');
+    $row->execute([(int)$id]);
+    json_response(['success' => true, 'data' => cms_decode_hero_slide($row->fetch(PDO::FETCH_ASSOC))]);
+});
+
+$router->add('DELETE', '/v1/admin/hero-slides/{id}', function($id) {
+    require_admin();
+    $pdo = db_connect();
+    try {
+        $stmt = $pdo->prepare('DELETE FROM hero_slides WHERE id=?');
+        $stmt->execute([(int)$id]);
+    } catch (Throwable $error) {
+        if (cms_hero_slides_missing($error)) {
+            return json_response(['success' => false, 'message' => 'Run Backend/hero_slides_migration.sql first.'], 503);
+        }
+        throw $error;
+    }
+    if (!$stmt->rowCount()) return json_response(['success' => false, 'message' => 'Hero slide not found'], 404);
+    json_response(['success' => true]);
 });
 
 $router->add('PATCH', '/v1/admin/home/popular-courses', function() {

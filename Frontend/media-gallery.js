@@ -21,7 +21,20 @@
   }
 
   function titleFor(item) {
-    return item.alt_text || item.file_name || "Media gallery item";
+    const fallback = isVideo(item) ? "Gallery Video" : "Gallery Image";
+    const title = String(item.alt_text || "").trim();
+    const rawName = String(item.file_name || "").trim();
+    const normalizedTitle = title.toLowerCase().replace(/\.[a-z0-9]{2,5}$/i, "");
+    const normalizedFile = rawName.toLowerCase().replace(/\.[a-z0-9]{2,5}$/i, "");
+    const looksLikeFilename = !title
+      || normalizedTitle === normalizedFile
+      || /\.[a-z0-9]{2,5}$/i.test(title)
+      || /[_\\]/.test(title)
+      || /^(img|images?|photos?|videos?|downloads?|screenshots?|whatsapp(?: image)?)(?:[-_ ]|$)/i.test(title)
+      || /\b20\d{2}[-_ ]\d{2}[-_ ]\d{2}\b/.test(title)
+      || /\d{8,}/.test(title);
+
+    return looksLikeFilename ? fallback : title;
   }
 
   function isVideo(item) {
@@ -60,18 +73,16 @@
     grid.innerHTML = items.map((item) => {
       const src = asset(item.file_url);
       const title = titleFor(item);
-      const type = isVideo(item) ? "video" : "image";
-      const media = type === "video"
-        ? `<video src="${esc(src)}" muted playsinline preload="metadata" onerror="this.closest('.mg-card').remove()"></video>`
-        : `<img src="${esc(src)}" alt="${esc(title)}" loading="lazy" onerror="this.closest('.mg-card').remove()">`;
+      const category = String(item.category || "General").trim() || "General";
+      const type = "image";
+      const media = `<img src="${esc(src)}" alt="${esc(title)}" loading="lazy" onerror="this.closest('.mg-card').remove()">`;
       return `
         <article class="mg-card">
-          <button type="button" data-preview="${esc(src)}" data-title="${esc(title)}" data-type="${type}">
+          <button type="button" data-preview="${esc(src)}" data-title="${esc(category)}" data-type="${type}">
             ${media}
           </button>
           <div class="mg-card-body">
-            <strong>${esc(title)}</strong>
-            <small>${item.created_at ? new Date(String(item.created_at).replace(" ", "T")).toLocaleDateString() : "Media Gallery"}</small>
+            <span class="mg-category">${esc(category)}</span>
           </div>
         </article>`;
     }).join("");

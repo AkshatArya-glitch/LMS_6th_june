@@ -251,6 +251,7 @@ $router->add('POST', '/v1/admin/media/upload', function() {
         'partners' => 'partner',
         'testimonials' => 'testimonial',
         'popups' => 'popup',
+        'gallery' => 'gallery',
     ];
     $isSectionImage = isset($imageFolders[$folder]);
     $allowedTypes = $isSectionImage
@@ -320,7 +321,22 @@ $router->add('GET', '/v1/faqs/{pageKey}', function($pageKey) {
 
 $router->add('GET', '/v1/media-gallery', function() {
     $pdo = db_connect();
-    $rows = $pdo->query("SELECT id,file_name,file_url,file_type,alt_text,created_at FROM media_assets WHERE file_type IN ('image','video') ORDER BY created_at DESC")->fetchAll(PDO::FETCH_ASSOC);
+    if (cms_extra_has_column($pdo, 'media_assets', 'is_gallery')) {
+        $rows = $pdo->query(
+            "SELECT id,file_url,file_type,alt_text,gallery_category AS category,
+                    gallery_sort_order AS sort_order,created_at
+             FROM media_assets
+             WHERE file_type='image' AND is_gallery=1 AND is_active=1
+             ORDER BY gallery_sort_order ASC,id DESC"
+        )->fetchAll(PDO::FETCH_ASSOC);
+    } else {
+        $rows = $pdo->query(
+            "SELECT id,file_url,file_type,alt_text,'General' AS category,0 AS sort_order,created_at
+             FROM media_assets
+             WHERE file_type='image'
+             ORDER BY created_at DESC"
+        )->fetchAll(PDO::FETCH_ASSOC);
+    }
     json_response(['success' => true, 'data' => $rows]);
 });
 

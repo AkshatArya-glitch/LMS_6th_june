@@ -44,9 +44,17 @@
 
   /* ========== 2. HERO ========== */
   let currentSlide = 0;
+  let heroTimer = null;
+
+  function getHeroSlides() {
+    return Array.isArray(siteData.heroSlides) ? siteData.heroSlides.filter(Boolean) : [];
+  }
 
   function renderHero() {
-    const slide = siteData.heroSlides[currentSlide];
+    const slides = getHeroSlides();
+    if (!slides.length) return;
+    currentSlide = ((currentSlide % slides.length) + slides.length) % slides.length;
+    const slide = slides[currentSlide];
     const hero = $("#hero-section");
     if (hero) {
       hero.style.setProperty("--hero-banner-image", `url("${slide.bannerImage || slide.image}")`);
@@ -56,19 +64,18 @@
     const content = $("#hero-content");
     content.innerHTML = `
       <h1 class="hero-headline">
-        ${slide.headline}<br>
-        <span class="text-red">${slide.headlineAccent}</span>
+        ${slide.headline || ""}${slide.headlineAccent ? `<br><span class="text-red">${slide.headlineAccent}</span>` : ""}
       </h1>
-      <p class="hero-paragraph">${slide.paragraph}</p>
+      <p class="hero-paragraph">${slide.paragraph || ""}</p>
       <div class="hero-ctas">
-        <a href="${slide.cta1.href}" class="btn btn-red btn-lg">${slide.cta1.label}</a>
-        <a href="${slide.cta2.href}" class="btn btn-outline-red btn-lg">${slide.cta2.label}</a>
+        ${slide.cta1?.label ? `<a href="${slide.cta1.href || "#"}" class="btn btn-red btn-lg">${slide.cta1.label}</a>` : ""}
+        ${slide.cta2?.label ? `<a href="${slide.cta2.href || "#"}" class="btn btn-outline-red btn-lg">${slide.cta2.label}</a>` : ""}
       </div>
     `;
 
     const heroImg = $("#hero-image");
-    heroImg.src = slide.image;
-    heroImg.alt = slide.imageAlt;
+    heroImg.src = slide.image || "";
+    heroImg.alt = slide.imageAlt || "Student learning";
     heroImg.onerror = () => {
       const fallback = window.eeplResolveAsset
         ? window.eeplResolveAsset("assets/hero-student.png")
@@ -78,7 +85,7 @@
     };
 
     const badges = $("#hero-badges");
-    badges.innerHTML = slide.badges
+    badges.innerHTML = (Array.isArray(slide.badges) ? slide.badges : [])
       .map(
         (b, i) => `
       <div class="hero-badge hero-badge--${i + 1}" style="animation-delay:${i * 0.15}s">
@@ -91,15 +98,39 @@
       )
       .join("");
 
-    // Hero arrows
-    $("#hero-prev").onclick = () => {
-      currentSlide = (currentSlide - 1 + siteData.heroSlides.length) % siteData.heroSlides.length;
-      renderHero();
-    };
-    $("#hero-next").onclick = () => {
-      currentSlide = (currentSlide + 1) % siteData.heroSlides.length;
-      renderHero();
-    };
+    const hasMultipleSlides = slides.length > 1;
+    $("#hero-prev").hidden = !hasMultipleSlides;
+    $("#hero-next").hidden = !hasMultipleSlides;
+    hero?.setAttribute("aria-label", `Hero slide ${currentSlide + 1} of ${slides.length}`);
+  }
+
+  function showHeroSlide(index, restartTimer = true) {
+    currentSlide = index;
+    renderHero();
+    if (restartTimer) startHeroAutoSlide();
+  }
+
+  function startHeroAutoSlide() {
+    clearInterval(heroTimer);
+    const slides = getHeroSlides();
+    if (slides.length < 2 || document.hidden || window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+    heroTimer = window.setInterval(() => showHeroSlide(currentSlide + 1, false), 7000);
+  }
+
+  function initHeroCarousel() {
+    const hero = $("#hero-section");
+    const previous = $("#hero-prev");
+    const next = $("#hero-next");
+    if (!hero || !previous || !next) return;
+
+    previous.addEventListener("click", () => showHeroSlide(currentSlide - 1));
+    next.addEventListener("click", () => showHeroSlide(currentSlide + 1));
+    hero.addEventListener("mouseenter", () => clearInterval(heroTimer));
+    hero.addEventListener("mouseleave", startHeroAutoSlide);
+    hero.addEventListener("focusin", () => clearInterval(heroTimer));
+    hero.addEventListener("focusout", startHeroAutoSlide);
+    document.addEventListener("visibilitychange", startHeroAutoSlide);
+    startHeroAutoSlide();
   }
 
   /* ========== 3. POPULAR COURSES ========== */
@@ -451,6 +482,23 @@
     $("#footer-copyright").textContent = f.copyright;
   }
 
+  function renderFloatingContact() {
+    const actions = $("#home-floating-contact");
+    if (!actions || !siteData.counselling) return;
+
+    const phone = String(siteData.counselling.phone || "").trim();
+    const phoneHref = phone.replace(/[^\d+]/g, "");
+    const whatsappDigits = String(siteData.counselling.whatsappLink || phone).replace(/\D/g, "");
+    const call = $("#home-float-call");
+    const whatsapp = $("#home-float-whatsapp");
+
+    call.hidden = !phoneHref;
+    whatsapp.hidden = !whatsappDigits;
+    if (phoneHref) call.href = `tel:${phoneHref}`;
+    if (whatsappDigits) whatsapp.href = `https://wa.me/${whatsappDigits}`;
+    actions.hidden = !phoneHref && !whatsappDigits;
+  }
+
   /* ========== 11. PROMOTION POPUP ========== */
   /**
    * Renders and controls the promotional popup / modal.
@@ -673,6 +721,7 @@
     renderNav();
     if ($("#hero-section")) {
       renderHero();
+      initHeroCarousel();
       renderCourses();
       renderWebinars();
       renderStats();
@@ -684,6 +733,7 @@
       renderFaqs();
     }
     renderFooter();
+    renderFloatingContact();
     initHeroMotion();
 
     // Slight delay so DOM paints before observing

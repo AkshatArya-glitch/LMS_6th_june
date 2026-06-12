@@ -26,6 +26,119 @@ const MESSAGES_API = window.MESSAGES_API_BASE || "../../Backend/api";
 const IMAGE_UPLOAD_MAX_BYTES = 5 * 1024 * 1024;
 const IMAGE_UPLOAD_TYPES = ['image/jpeg', 'image/png', 'image/webp'];
 
+const ADMIN_ICON_PATHS = {
+  dashboard: '<rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>',
+  users: '<path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75"/>',
+  trainer: '<circle cx="12" cy="7" r="4"/><path d="M5.5 21v-2a6.5 6.5 0 0 1 13 0v2M4 4l8-3 8 3-8 3z"/>',
+  book: '<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20V4H6.5A2.5 2.5 0 0 0 4 6.5z"/><path d="M4 6.5v13A2.5 2.5 0 0 0 6.5 22H20"/>',
+  clipboard: '<rect x="5" y="4" width="14" height="17" rx="2"/><path d="M9 4V2h6v2M9 9h6M9 13h6M9 17h4"/>',
+  check: '<circle cx="12" cy="12" r="9"/><path d="m8 12 2.5 2.5L16 9"/>',
+  award: '<circle cx="12" cy="8" r="5"/><path d="m8.5 12-1 9 4.5-2 4.5 2-1-9"/>',
+  file: '<path d="M6 2h8l4 4v16H6z"/><path d="M14 2v5h5M9 12h6M9 16h6"/>',
+  money: '<circle cx="12" cy="12" r="9"/><path d="M15 8.5c-.7-.7-1.7-1-3-1-1.7 0-3 .8-3 2s1.3 2 3 2 3 .8 3 2-1.3 2-3 2c-1.3 0-2.3-.3-3-1M12 5v14"/>',
+  mail: '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/>',
+  megaphone: '<path d="M3 11v2l13 5V6zM16 9h3a2 2 0 0 1 0 4h-3M6 14l1 6h4l-1-5"/>',
+  chart: '<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>',
+  home: '<path d="m3 11 9-8 9 8"/><path d="M5 10v11h14V10M9 21v-7h6v7"/>',
+  image: '<rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8.5" cy="9" r="1.5"/><path d="m21 15-5-5L5 20"/>',
+  star: '<path d="m12 2 3 6 6.5 1-4.75 4.6 1.1 6.4L12 17l-5.85 3 1.1-6.4L2.5 9 9 8z"/>',
+  help: '<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 1 1 3.5 2.3c-.7.3-1 .8-1 1.7M12 17h.01"/>',
+  link: '<path d="M10 13a5 5 0 0 0 7.5.5l2-2a5 5 0 0 0-7-7l-1.1 1.1M14 11a5 5 0 0 0-7.5-.5l-2 2a5 5 0 0 0 7 7l1.1-1.1"/>',
+  video: '<rect x="3" y="5" width="14" height="14" rx="2"/><path d="m17 10 4-3v10l-4-3z"/>',
+  leads: '<path d="M4 4h16v16H4z"/><path d="m4 7 8 6 8-6"/>',
+  settings: '<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.9l.1.1-2.8 2.8-.1-.1a1.7 1.7 0 0 0-1.9-.3 1.7 1.7 0 0 0-1 1.6v.2h-4V21a1.7 1.7 0 0 0-1-1.6 1.7 1.7 0 0 0-1.9.3l-.1.1L4.2 17l.1-.1a1.7 1.7 0 0 0 .3-1.9A1.7 1.7 0 0 0 3 14H2.8v-4H3a1.7 1.7 0 0 0 1.6-1 1.7 1.7 0 0 0-.3-1.9L4.2 7 7 4.2l.1.1a1.7 1.7 0 0 0 1.9.3A1.7 1.7 0 0 0 10 3V2.8h4V3a1.7 1.7 0 0 0 1 1.6 1.7 1.7 0 0 0 1.9-.3l.1-.1L19.8 7l-.1.1a1.7 1.7 0 0 0-.3 1.9 1.7 1.7 0 0 0 1.6 1h.2v4H21a1.7 1.7 0 0 0-1.6 1z"/>',
+  logout: '<path d="M10 17l5-5-5-5M15 12H3M14 3h5a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2h-5"/>',
+  search: '<circle cx="11" cy="11" r="7"/><path d="m20 20-4-4"/>',
+  bell: '<path d="M18 8a6 6 0 0 0-12 0c0 7-3 7-3 9h18c0-2-3-2-3-9M10 21h4"/>',
+  menu: '<path d="M4 6h16M4 12h16M4 18h16"/>',
+  close: '<path d="m6 6 12 12M18 6 6 18"/>',
+  plus: '<path d="M12 5v14M5 12h14"/>',
+  edit: '<path d="M4 20h4L19 9l-4-4L4 16zM13.5 6.5l4 4"/>',
+  upload: '<path d="M12 16V4M7 9l5-5 5 5M5 20h14"/>',
+  trash: '<path d="M4 7h16M9 7V4h6v3M7 7l1 14h8l1-14M10 11v6M14 11v6"/>',
+};
+
+function adminIcon(name, className = '') {
+  const paths = ADMIN_ICON_PATHS[name] || ADMIN_ICON_PATHS.file;
+  return `<svg class="admin-icon ${className}" viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
+}
+
+function hydrateAdminIcons() {
+  const pageIcons = {
+    dashboard: 'dashboard', 'lms-users': 'users', 'lms-trainers': 'trainer',
+    courses: 'book', 'lms-batches': 'clipboard', 'lms-enrollments': 'clipboard',
+    'lms-assignments': 'file', 'lms-assessments': 'check', 'lms-certificates': 'award',
+    'lms-materials': 'file', 'lms-payments': 'money', 'lms-messages': 'mail',
+    'lms-announcements': 'megaphone', 'lms-reports': 'chart', 'home-editor': 'home',
+    'home-popups': 'image', 'trusted-by': 'users', testimonials: 'star', faqs: 'help',
+    counters: 'chart', 'navigation-menu': 'link', 'course-categories': 'clipboard',
+    webinars: 'video', posts: 'file', media: 'image', 'contact-leads': 'leads', settings: 'settings',
+  };
+  document.querySelectorAll('.nav-item[data-page]').forEach(item => {
+    const icon = item.querySelector('.nav-icon');
+    if (icon) icon.innerHTML = adminIcon(pageIcons[item.dataset.page] || 'file');
+  });
+
+  const setIcon = (selector, name, keepChildren = false) => {
+    const element = document.querySelector(selector);
+    if (!element) return;
+    if (keepChildren) {
+      Array.from(element.childNodes).filter(node => node.nodeType === Node.TEXT_NODE).forEach(node => node.remove());
+      element.insertAdjacentHTML('afterbegin', adminIcon(name));
+    } else {
+      element.innerHTML = adminIcon(name);
+    }
+  };
+  setIcon('#topbar-menu-btn', 'menu');
+  setIcon('#sidebar-close', 'close');
+  setIcon('.topbar-search-icon', 'search');
+  setIcon('#admin-notifications', 'bell', true);
+  setIcon('#admin-messages', 'mail', true);
+  document.getElementById('logout-btn').innerHTML = `${adminIcon('logout')}<span>Sign Out</span>`;
+  setIcon('#modal-close', 'close');
+}
+
+function repairBrokenLeadingIcons(root = document) {
+  root.querySelectorAll?.('button, .card-title, .empty-state-icon').forEach(element => {
+    const text = element.textContent.trim();
+    if (!text) return;
+    const parts = text.split(/\s+/);
+    if (!/[ðâï]/.test(parts[0])) return;
+    const cleanText = parts.slice(1).join(' ');
+    if (cleanText) {
+      element.textContent = cleanText;
+    } else if (element.matches('.btn-danger')) {
+      element.innerHTML = `${adminIcon('trash')}<span class="sr-only">Delete</span>`;
+    } else if (element.matches('button')) {
+      element.innerHTML = `${adminIcon('edit')}<span class="sr-only">Edit</span>`;
+    } else {
+      element.textContent = '';
+    }
+  });
+}
+
+function hydrateDynamicAdminIcons(root = document) {
+  const statIcons = ['users', 'trainer', 'book', 'clipboard', 'clipboard', 'money', 'file', 'check'];
+  root.querySelectorAll?.('.stat-icon').forEach((element, index) => {
+    if (element.dataset.iconReady) return;
+    element.innerHTML = adminIcon(statIcons[index % statIcons.length]);
+    element.dataset.iconReady = '1';
+  });
+
+  const quickIcons = ['book', 'video', 'file', 'upload', 'leads', 'settings'];
+  root.querySelectorAll?.('.dashboard-quick-grid button span').forEach((element, index) => {
+    if (element.dataset.iconReady) return;
+    element.innerHTML = adminIcon(quickIcons[index % quickIcons.length]);
+    element.dataset.iconReady = '1';
+  });
+
+  const uploadIcon = root.querySelector?.('#upload-zone > div:first-child');
+  if (uploadIcon && !uploadIcon.dataset.iconReady) {
+    uploadIcon.innerHTML = adminIcon('upload');
+    uploadIcon.dataset.iconReady = '1';
+  }
+}
+
 // ── State ──────────────────────────────────────────────────
 let currentPage = 'dashboard';
 let adminToken = localStorage.getItem(TOKEN_KEY) || null;
@@ -235,7 +348,7 @@ const PAGE_TITLES = {
   'testimonials': 'Testimonials', 'trusted-by': 'Trusted By Partners',
   'faqs': 'FAQs Manager', 'counters': 'Stats / Counters',
   'navigation-menu': 'Navigation Menu',
-  'media': 'Media Library', 'contact-leads': 'Contact Leads',
+  'media': 'Media & Gallery', 'contact-leads': 'Contact Leads',
   'settings': 'Settings',
   'lms-users': 'Manage Users', 'lms-trainers': 'Manage Trainers',
   'lms-batches': 'Manage Batches', 'lms-enrollments': 'Enrollments',
@@ -651,7 +764,15 @@ async function renderHomeEditor() {
   <div id="tab-hero" class="tab-content active">
     <div class="card">
       <div class="card-title">🦸 Hero Section</div>
-      <form id="hero-form" class="section-editor">
+      <div class="card-heading-row">
+        <div>
+          <div class="card-title">Hero Slides</div>
+          <p class="text-muted">Slides are shown by sort order and loop automatically on the home page.</p>
+        </div>
+        <button type="button" class="btn-primary" onclick="openHeroSlideModal()">+ Add Slide</button>
+      </div>
+      <div id="hero-slides-list"><div class="loading-block"><div class="loading-ring"></div></div></div>
+      <template id="legacy-hero-form">
         <div class="form-grid">
           <div class="form-group"><label>Main Title</label><input id="hero-title" class="form-control" placeholder="Learn Today. Lead Tomorrow."></div>
           <div class="form-group"><label>Highlighted Text (optional)</label><input id="hero-highlight" class="form-control" placeholder="Lead Tomorrow"></div>
@@ -665,7 +786,7 @@ async function renderHomeEditor() {
         <div style="display:flex;justify-content:flex-end;gap:10px;margin-top:4px">
           <button type="submit" class="btn-primary">💾 Save Hero Section</button>
         </div>
-      </form>
+      </template>
     </div>
   </div>
 
@@ -698,23 +819,9 @@ async function renderHomeEditor() {
     </div>
   </div>`;
 
-  // Load hero data
-  const [hr, sectionsResponse] = await Promise.all([
-    api('GET', 'home/hero'),
-    api('GET', 'pages/home/sections'),
-  ]);
-  if (hr.ok && hr.data.data) {
-    const h = hr.data.data;
-    const c = h.content || {};
-    setValue('hero-title', h.title || '');
-    setValue('hero-subtitle', h.subtitle || '');
-    setValue('hero-highlight', c.highlight || '');
-    setValue('hero-cta1-text', c.cta_primary_text || '');
-    setValue('hero-cta1-url', c.cta_primary_url || '');
-    setValue('hero-cta2-text', c.cta_secondary_text || '');
-    setValue('hero-cta2-url', c.cta_secondary_url || '');
-    setImageValue('hero-img', c.image_url || '');
-  }
+  document.querySelector('#tab-hero > .card > .card-title')?.classList.add('hidden');
+
+  const sectionsResponse = await api('GET', 'pages/home/sections');
   if (sectionsResponse.ok) {
     const cta = (sectionsResponse.data.data || []).find(section => section.section_key === 'cta');
     if (cta) {
@@ -725,41 +832,6 @@ async function renderHomeEditor() {
       setValue('cta-btn-url', c.btn_url || c.cta_primary_url || '');
     }
   }
-
-  bindImageUploadPreview('hero-img');
-
-  document.getElementById('hero-form').onsubmit = async (e) => {
-    e.preventDefault();
-    const submit = e.currentTarget.querySelector('button[type="submit"]');
-    const originalText = submit.textContent;
-    submit.disabled = true;
-    submit.textContent = 'Saving...';
-    let heroImagePath = '';
-    try {
-      heroImagePath = await uploadImageField('hero-img', 'hero');
-    } catch (err) {
-      toast(err.message || 'Hero image upload failed', 'error');
-      submit.disabled = false;
-      submit.textContent = originalText;
-      return;
-    }
-    const data = {
-      title: getValue('hero-title'), subtitle: getValue('hero-subtitle'),
-      highlight: getValue('hero-highlight'),
-      cta_primary_text: getValue('hero-cta1-text'), cta_primary_url: getValue('hero-cta1-url'),
-      cta_secondary_text: getValue('hero-cta2-text'), cta_secondary_url: getValue('hero-cta2-url'),
-      image_url: heroImagePath,
-    };
-    const r = await api('PATCH', 'admin/home/hero', data);
-    if (r.ok) {
-      setImageValue('hero-img', heroImagePath, true);
-      toast('Hero image and section saved!');
-    } else {
-      toast(r.data.message || 'Hero save failed', 'error');
-    }
-    submit.disabled = false;
-    submit.textContent = originalText;
-  };
 
   // CTA form
   document.getElementById('cta-form').onsubmit = async (e) => {
@@ -772,6 +844,160 @@ async function renderHomeEditor() {
   // Popular courses — load on tab switch
   document.querySelector('[onclick*="tab-popular"]').addEventListener('click', () => loadPopularCoursesPicker());
   document.querySelector('[onclick*="tab-counters-home"]').addEventListener('click', () => loadCountersSection('counters-home-section'));
+  await loadHeroSlides();
+}
+
+let _heroSlides = [];
+
+async function loadHeroSlides() {
+  const container = document.getElementById('hero-slides-list');
+  if (!container) return;
+  const response = await api('GET', 'admin/hero-slides');
+  if (!response.ok || !response.data.success) {
+    container.innerHTML = `<div class="admin-inline-notice">${esc(response.data.message || 'Unable to load hero slides.')}</div>`;
+    return;
+  }
+
+  _heroSlides = response.data.data || [];
+  container.innerHTML = _heroSlides.length ? `
+    <div class="table-wrap">
+      <table class="hero-slides-table">
+        <thead><tr><th>Slide</th><th>Order</th><th>Status</th><th>Actions</th></tr></thead>
+        <tbody>
+          ${_heroSlides.map(slide => `
+            <tr>
+              <td>
+                <div class="hero-slide-summary">
+                  ${slide.image_path
+                    ? `<img src="${esc(adminAssetUrl(slide.image_path))}" alt="${esc(slide.image_alt || slide.title)}">`
+                    : '<div class="hero-slide-placeholder">No image</div>'}
+                  <div>
+                    <strong>${esc(slide.title)}</strong>
+                    ${slide.accent_text ? `<span>${esc(slide.accent_text)}</span>` : ''}
+                  </div>
+                </div>
+              </td>
+              <td>${Number(slide.sort_order) || 0}</td>
+              <td>
+                <label class="toggle-switch">
+                  <div class="toggle">
+                    <input type="checkbox" ${Number(slide.is_active) ? 'checked' : ''} onchange="toggleHeroSlide(${slide.id},this.checked)">
+                    <span class="toggle-slider"></span>
+                  </div>
+                  <span>${Number(slide.is_active) ? 'Active' : 'Inactive'}</span>
+                </label>
+              </td>
+              <td>
+                <div class="table-actions">
+                  <button type="button" class="btn-icon btn-sm" onclick="openHeroSlideModal(${slide.id})">Edit</button>
+                  <button type="button" class="btn-danger btn-sm" onclick="deleteHeroSlide(${slide.id})">Delete</button>
+                </div>
+              </td>
+            </tr>`).join('')}
+        </tbody>
+      </table>
+    </div>` : '<div class="empty-state"><p>No hero slides yet. Add one to replace the current fallback hero.</p></div>';
+}
+
+function validHeroButtonLink(value) {
+  const link = String(value || '').trim();
+  if (!link) return true;
+  if (/^https?:\/\//i.test(link)) {
+    try { return Boolean(new URL(link)); } catch (_) { return false; }
+  }
+  return !link.includes(':') && !link.includes('\\') && /^(?:\/|#|\.\/|\.\.\/|[a-z0-9])/i.test(link);
+}
+
+function openHeroSlideModal(id = null) {
+  const slide = _heroSlides.find(item => Number(item.id) === Number(id)) || {};
+  const body = `
+    <div class="form-grid">
+      <div class="form-group"><label>Title *</label><input id="hs-title" class="form-control" value="${esc(slide.title || '')}" placeholder="Learn Today."></div>
+      <div class="form-group"><label>Highlighted Text</label><input id="hs-accent" class="form-control" value="${esc(slide.accent_text || '')}" placeholder="Lead Tomorrow."></div>
+      <div class="form-group full"><label>Description</label><textarea id="hs-description" class="form-control" rows="3">${esc(slide.description || '')}</textarea></div>
+      <div class="form-group"><label>Primary Button Text</label><input id="hs-primary-text" class="form-control" value="${esc(slide.primary_button_text || '')}"></div>
+      <div class="form-group"><label>Primary Button Link</label><input id="hs-primary-link" class="form-control" value="${esc(slide.primary_button_link || '')}" placeholder="courses.html"></div>
+      <div class="form-group"><label>Secondary Button Text</label><input id="hs-secondary-text" class="form-control" value="${esc(slide.secondary_button_text || '')}"></div>
+      <div class="form-group"><label>Secondary Button Link</label><input id="hs-secondary-link" class="form-control" value="${esc(slide.secondary_button_link || '')}" placeholder="contact.html"></div>
+      <div class="form-group"><label>Image Alt Text</label><input id="hs-image-alt" class="form-control" value="${esc(slide.image_alt || '')}" placeholder="Student learning"></div>
+      <div class="form-group"><label>Sort Order</label><input id="hs-sort" type="number" class="form-control" value="${Number(slide.sort_order) || 0}"></div>
+      <div class="form-group full"><label>Slide Image</label>${imageUploadField('hs-image', 'Upload Hero Slide Image', slide.image_path || '', 'Recommended size: 1200x600px or larger')}</div>
+      <div class="form-group full">
+        <label class="toggle-switch">
+          <div class="toggle"><input id="hs-active" type="checkbox" ${slide.is_active === undefined || Number(slide.is_active) ? 'checked' : ''}><span class="toggle-slider"></span></div>
+          <span>Active on home page</span>
+        </label>
+      </div>
+    </div>`;
+
+  openModal(id ? 'Edit Hero Slide' : 'Add Hero Slide', body, async () => {
+    const title = getValue('hs-title');
+    const primaryLink = getValue('hs-primary-link');
+    const secondaryLink = getValue('hs-secondary-link');
+    if (!title) return toast('Slide title is required', 'error');
+    if (!validHeroButtonLink(primaryLink) || !validHeroButtonLink(secondaryLink)) {
+      return toast('Use valid http(s) URLs or relative website links for buttons', 'error');
+    }
+
+    const confirmButton = document.getElementById('modal-confirm');
+    confirmButton.disabled = true;
+    confirmButton.textContent = 'Saving...';
+    let imagePath = '';
+    try {
+      imagePath = await uploadImageField('hs-image', 'hero');
+    } catch (error) {
+      confirmButton.disabled = false;
+      confirmButton.textContent = 'Save';
+      return toast(error.message || 'Hero image upload failed', 'error');
+    }
+
+    const payload = {
+      title,
+      accent_text: getValue('hs-accent'),
+      description: getValue('hs-description'),
+      primary_button_text: getValue('hs-primary-text'),
+      primary_button_link: primaryLink,
+      secondary_button_text: getValue('hs-secondary-text'),
+      secondary_button_link: secondaryLink,
+      image_path: imagePath,
+      image_alt: getValue('hs-image-alt') || 'Student learning',
+      badges: Array.isArray(slide.badges) ? slide.badges : [],
+      sort_order: Number.parseInt(getValue('hs-sort') || '0', 10),
+      is_active: document.getElementById('hs-active').checked ? 1 : 0,
+    };
+    const response = await api(id ? 'PATCH' : 'POST', id ? `admin/hero-slides/${id}` : 'admin/hero-slides', payload);
+    if (!response.ok || !response.data.success) {
+      confirmButton.disabled = false;
+      confirmButton.textContent = 'Save';
+      return toast(response.data.message || 'Hero slide could not be saved', 'error');
+    }
+    closeModal();
+    toast('Hero slide saved');
+    loadHeroSlides();
+  });
+  bindImageUploadPreview('hs-image');
+}
+
+async function toggleHeroSlide(id, isActive) {
+  const response = await api('PATCH', `admin/hero-slides/${id}`, { is_active: isActive ? 1 : 0 });
+  if (response.ok && response.data.success) {
+    toast(isActive ? 'Hero slide activated' : 'Hero slide deactivated');
+    loadHeroSlides();
+  } else {
+    toast(response.data.message || 'Slide status could not be updated', 'error');
+    loadHeroSlides();
+  }
+}
+
+async function deleteHeroSlide(id) {
+  if (!confirm('Delete this hero slide? This cannot be undone.')) return;
+  const response = await api('DELETE', `admin/hero-slides/${id}`);
+  if (response.ok && response.data.success) {
+    toast('Hero slide deleted');
+    loadHeroSlides();
+  } else {
+    toast(response.data.message || 'Hero slide could not be deleted', 'error');
+  }
 }
 
 async function loadPopularCoursesPicker() {
@@ -867,15 +1093,15 @@ async function renderCourses() {
   const r = await api('GET', 'admin/courses');
   const courses = r.ok ? r.data.data : [];
   content.innerHTML = `
-    <div class="page-header">
+    <div class="page-header courses-page-header">
       <div><div class="page-title">Courses</div><div class="page-subtitle">${courses.length} courses total</div></div>
       <div class="page-actions">
         <button class="btn-primary" onclick="openCourseModal()">+ Add Course</button>
       </div>
     </div>
     <div class="card">
-      <div class="table-wrap">
-        <table>
+      <div class="table-wrap courses-table-wrap">
+        <table class="admin-courses-table">
           <thead><tr><th>Course</th><th>Trainer</th><th>Category</th><th>Price</th><th>Level</th><th>Status</th><th>Popular</th><th>Featured</th><th>Actions</th></tr></thead>
           <tbody id="courses-tbody">
             ${courses.length ? courses.map(c => courseRow(c)).join('') : '<tr><td colspan="9" class="empty-state"><div class="empty-state-icon">📚</div><p>No courses yet</p></td></tr>'}
@@ -1338,32 +1564,37 @@ async function renderHomePopups() {
   const badgeClass = status => status === 'active' ? 'badge-green' : status === 'draft' ? 'badge-yellow' : 'badge-red';
   const dateLabel = value => value ? new Date(String(value).replace(' ', 'T')).toLocaleString('en-IN') : 'No limit';
   content.innerHTML = `
-    <div class="page-header">
+    <div class="page-header popup-page-header">
       <div><div class="page-title">Pop ups</div><div class="page-subtitle">${items.length} pop up${items.length === 1 ? '' : 's'}</div></div>
-      <button class="btn-primary" onclick="openHomePopupModal()">+ Add Pop up</button>
+      <div class="page-actions">
+        <button class="btn-primary" type="button" onclick="openHomePopupModal()">${adminIcon('plus')} Add Pop up</button>
+      </div>
     </div>
-    <div class="card">
-      <div class="table-wrap">
-        <table>
+    <div class="card popup-admin-card">
+      <div class="table-wrap popup-table-wrap">
+        <table class="admin-popups-table">
           <thead><tr><th>Pop up</th><th>Display Page</th><th>Position</th><th>Type</th><th>Schedule</th><th>Status</th><th>Actions</th></tr></thead>
           <tbody>
             ${items.length ? items.map(item => `
               <tr>
-                <td>
-                  <div style="display:flex;align-items:center;gap:10px">
+                <td class="popup-summary-cell">
+                  <div class="popup-summary">
                     ${item.image_url ? `<img src="${esc(adminAssetUrl(item.image_url))}" class="td-img" style="object-fit:cover">` : ''}
-                    <div><b>${esc(item.title)}</b><div class="text-muted">${esc((item.message || '').slice(0, 70))}</div></div>
+                    <div class="popup-copy">
+                      <b class="popup-title" title="${esc(item.title)}">${esc(item.title)}</b>
+                      <div class="text-muted popup-message" title="${esc(item.message || '')}">${esc((item.message || '').slice(0, 70))}</div>
+                    </div>
                   </div>
                 </td>
-                <td>${esc(popupPageLabel(item.page_key))}</td>
-                <td>${esc(popupPositionLabel(item.position))}</td>
-                <td>${esc(String(item.popup_type || 'announcement').replace(/_/g, ' '))}</td>
-                <td class="text-muted"><div>${dateLabel(item.start_date)}</div><div>to ${dateLabel(item.end_date)}</div></td>
+                <td class="popup-page-cell">${esc(popupPageLabel(item.page_key))}</td>
+                <td class="popup-position-cell">${esc(popupPositionLabel(item.position))}</td>
+                <td class="popup-type-cell">${esc(String(item.popup_type || 'announcement').replace(/_/g, ' '))}</td>
+                <td class="text-muted popup-schedule-cell"><div>${dateLabel(item.start_date)}</div><div>to ${dateLabel(item.end_date)}</div></td>
                 <td><span class="badge ${badgeClass(item.status)}">${esc(item.status)}</span></td>
                 <td>
-                  <div style="display:flex;gap:6px">
-                    <button class="btn-icon btn-sm" onclick="openHomePopupModal(${item.id})">Edit</button>
-                    <button class="btn-danger btn-sm" onclick="deleteItem('home-popups',${item.id},decodeURIComponent('${enc(item.title)}'))">Delete</button>
+                  <div class="table-actions popup-actions">
+                    <button class="btn-icon btn-sm" type="button" onclick="openHomePopupModal(${item.id})">${adminIcon('edit')} Edit</button>
+                    <button class="btn-danger btn-sm" type="button" onclick="deleteItem('home-popups',${item.id},decodeURIComponent('${enc(item.title)}'))">${adminIcon('trash')} Delete</button>
                   </div>
                 </td>
               </tr>`).join('') : '<tr><td colspan="7" class="text-muted">No pop ups yet</td></tr>'}
@@ -1810,11 +2041,14 @@ function openNavModal(n = null) {
 }
 
 // ── MEDIA LIBRARY ──────────────────────────────────────────
-async function renderMedia() {
+async function renderLegacyMedia() {
   const content = document.getElementById('admin-content');
   content.innerHTML = `
     <div class="page-header">
-      <div><div class="page-title">Media Library</div></div>
+      <div><div class="page-title">Media Library</div><div class="page-subtitle">Upload and manage general site files.</div></div>
+      <div class="page-actions">
+        <button class="btn-secondary" type="button" onclick="renderMedia()">Gallery Manager</button>
+      </div>
     </div>
     <div class="card" style="margin-bottom:20px">
       <div id="upload-zone" class="upload-zone">
@@ -1887,6 +2121,203 @@ async function deleteMedia(id) {
 
 function copyMediaUrl(url) {
   navigator.clipboard.writeText(url).then(() => toast('URL copied to clipboard!'));
+}
+
+let _galleryItems = [];
+
+async function renderMedia() {
+  const content = document.getElementById('admin-content');
+  content.innerHTML = `
+    <div class="page-header">
+      <div>
+        <div class="page-title">Media Gallery</div>
+        <div class="page-subtitle">Manage the images displayed on the public gallery page.</div>
+      </div>
+      <div class="page-actions">
+        <button class="btn-secondary" type="button" onclick="renderLegacyMedia()">Media Library</button>
+        <button class="btn-primary" type="button" onclick="openGalleryModal()">${adminIcon('plus')} Add Image</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="card-heading-row">
+        <div>
+          <div class="card-title">Gallery Images</div>
+          <div class="page-subtitle" id="gallery-count">Loading...</div>
+        </div>
+        <input class="form-control gallery-search" placeholder="Search category or alt text" oninput="filterGallery(this.value)">
+      </div>
+      <div class="table-wrap gallery-table-wrap">
+        <table class="gallery-admin-table">
+          <thead><tr><th>Image</th><th>Category</th><th>Order</th><th>Visibility</th><th>Actions</th></tr></thead>
+          <tbody id="gallery-admin-body">
+            <tr><td colspan="5"><div class="loading-block"><div class="loading-ring"></div></div></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>`;
+  await loadGalleryAdmin();
+}
+
+async function loadGalleryAdmin() {
+  const response = await api('GET', 'admin/gallery');
+  if (!response.ok) {
+    _galleryItems = [];
+    renderGalleryAdmin([]);
+    toast(response.data.message || 'Unable to load gallery images', 'error');
+    return;
+  }
+  _galleryItems = response.data.data || [];
+  renderGalleryAdmin(_galleryItems);
+}
+
+function filterGallery(query) {
+  const value = String(query || '').trim().toLowerCase();
+  const items = value
+    ? _galleryItems.filter(item => `${item.category || ''} ${item.alt_text || ''}`.toLowerCase().includes(value))
+    : _galleryItems;
+  renderGalleryAdmin(items);
+}
+
+function renderGalleryAdmin(items) {
+  const body = document.getElementById('gallery-admin-body');
+  const count = document.getElementById('gallery-count');
+  if (count) count.textContent = `${_galleryItems.length} image${_galleryItems.length === 1 ? '' : 's'} total`;
+  if (!body) return;
+  body.innerHTML = items.length ? items.map(item => `
+    <tr>
+      <td class="gallery-image-cell">
+        <img src="${esc(adminAssetUrl(item.file_url))}" alt="${esc(item.alt_text || `${item.category || 'General'} gallery image`)}" loading="lazy">
+      </td>
+      <td><span class="badge badge-purple">${esc(item.category || 'General')}</span></td>
+      <td class="admin-nowrap">${Number(item.sort_order || 0)}</td>
+      <td><span class="badge ${Number(item.is_active) ? 'badge-green' : 'badge-yellow'}">${Number(item.is_active) ? 'Active' : 'Hidden'}</span></td>
+      <td>
+        <div class="table-actions gallery-actions">
+          <button class="btn-icon btn-sm" type="button" onclick="openGalleryModal(${Number(item.id)})">${adminIcon('edit')} Edit</button>
+          <button class="btn-icon btn-sm" type="button" onclick="toggleGalleryImage(${Number(item.id)})">${Number(item.is_active) ? 'Hide' : 'Show'}</button>
+          <button class="btn-danger btn-sm" type="button" onclick="deleteGalleryImage(${Number(item.id)})">${adminIcon('trash')} Delete</button>
+        </div>
+      </td>
+    </tr>`).join('') : `
+      <tr><td colspan="5" class="empty-state"><p>No gallery images found.</p></td></tr>`;
+}
+
+async function uploadGalleryImageAsset() {
+  const input = document.getElementById('gallery-image-file');
+  const file = input?.files?.[0];
+  if (!file) return null;
+  const error = validateImageFile(file);
+  if (error) throw new Error(error);
+
+  const formData = new FormData();
+  formData.append('file', file);
+  formData.append('folder', 'gallery');
+  const response = await api('POST', 'admin/media/upload', formData, true);
+  if (!response.ok || !response.data.success || !response.data.data?.id) {
+    throw new Error(response.data.message || 'Gallery image upload failed');
+  }
+  return response.data.data;
+}
+
+function openGalleryModal(id = null) {
+  const item = id ? _galleryItems.find(entry => Number(entry.id) === Number(id)) : null;
+  if (id && !item) return toast('Gallery image not found', 'error');
+  const current = item || {};
+  const body = `
+    <div class="form-grid">
+      <div class="form-group full">
+        <label>Category *</label>
+        <input id="gallery-category" class="form-control" list="gallery-category-list" maxlength="100" value="${esc(current.category || 'General')}" placeholder="Choose or enter a category">
+        <datalist id="gallery-category-list">
+          <option value="General"><option value="Classroom"><option value="Events"><option value="Workshops"><option value="Achievements">
+        </datalist>
+      </div>
+      <div class="form-group full">
+        <label>Alternative Text</label>
+        <input id="gallery-alt" class="form-control" maxlength="255" value="${esc(current.alt_text || '')}" placeholder="Describe the image for accessibility">
+      </div>
+      <div class="form-group">
+        <label>Display Order</label>
+        <input id="gallery-sort" class="form-control" type="number" step="1" value="${Number(current.sort_order || 0)}">
+      </div>
+      <div class="form-group">
+        <label>Visibility</label>
+        <label class="toggle-switch gallery-active-toggle">
+          <div class="toggle"><input id="gallery-active" type="checkbox" ${current.is_active === undefined || Number(current.is_active) ? 'checked' : ''}><span class="toggle-slider"></span></div>
+          <span>Show on public gallery</span>
+        </label>
+      </div>
+      <div class="form-group full">
+        <label>${item ? 'Replace Image' : 'Gallery Image *'}</label>
+        ${imageUploadField('gallery-image', item ? 'Choose a replacement image' : 'Choose gallery image', current.file_url || '', 'JPG, JPEG, PNG, or WEBP. Maximum size 5MB.')}
+      </div>
+    </div>`;
+
+  openModal(item ? 'Edit Gallery Image' : 'Add Gallery Image', body, async () => {
+    const category = getValue('gallery-category');
+    const sortOrder = Number.parseInt(getValue('gallery-sort') || '0', 10);
+    const hasNewImage = Boolean(document.getElementById('gallery-image-file')?.files?.[0]);
+    if (!category) return toast('Category is required', 'error');
+    if (!Number.isInteger(sortOrder)) return toast('Display order must be a whole number', 'error');
+    if (!item && !hasNewImage) return toast('Choose an image to upload', 'error');
+
+    const confirmButton = document.getElementById('modal-confirm');
+    confirmButton.disabled = true;
+    confirmButton.textContent = 'Saving...';
+    let uploaded = null;
+    try {
+      uploaded = await uploadGalleryImageAsset();
+      const targetId = uploaded?.id || item.id;
+      const response = await api('PATCH', `admin/gallery/${targetId}`, {
+        category,
+        alt_text: getValue('gallery-alt'),
+        sort_order: sortOrder,
+        is_active: document.getElementById('gallery-active').checked ? 1 : 0,
+      });
+      if (!response.ok) throw new Error(response.data.message || 'Unable to save gallery image');
+
+      if (uploaded && item && Number(uploaded.id) !== Number(item.id)) {
+        await api('DELETE', `admin/media/${item.id}`);
+      }
+      toast(item ? 'Gallery image updated' : 'Gallery image added');
+      closeModal();
+      await loadGalleryAdmin();
+    } catch (error) {
+      if (uploaded?.id) await api('DELETE', `admin/media/${uploaded.id}`);
+      confirmButton.disabled = false;
+      confirmButton.textContent = 'Save';
+      toast(error.message || 'Unable to save gallery image', 'error');
+    }
+  });
+  bindImageUploadPreview('gallery-image');
+}
+
+async function toggleGalleryImage(id) {
+  const item = _galleryItems.find(entry => Number(entry.id) === Number(id));
+  if (!item) return;
+  const response = await api('PATCH', `admin/gallery/${id}`, {
+    category: item.category || 'General',
+    alt_text: item.alt_text || '',
+    sort_order: Number(item.sort_order || 0),
+    is_active: Number(item.is_active) ? 0 : 1,
+  });
+  if (response.ok) {
+    toast(Number(item.is_active) ? 'Gallery image hidden' : 'Gallery image activated');
+    await loadGalleryAdmin();
+  } else {
+    toast(response.data.message || 'Unable to update gallery image', 'error');
+  }
+}
+
+async function deleteGalleryImage(id) {
+  if (!confirm('Delete this gallery image? This cannot be undone.')) return;
+  const response = await api('DELETE', `admin/media/${id}`);
+  if (response.ok) {
+    toast('Gallery image deleted');
+    await loadGalleryAdmin();
+  } else {
+    toast(response.data.message || 'Unable to delete gallery image', 'error');
+  }
 }
 
 // ── CONTACT LEADS ──────────────────────────────────────────
@@ -2112,6 +2543,14 @@ async function deleteItem(type, id, name) {
 
 // ── INIT ───────────────────────────────────────────────────
 function init() {
+  hydrateAdminIcons();
+  const adminContent = document.getElementById('admin-content');
+  const refreshDynamicIcons = () => {
+    hydrateDynamicAdminIcons(adminContent);
+    repairBrokenLeadingIcons(adminContent);
+  };
+  new MutationObserver(refreshDynamicIcons).observe(adminContent, { childList: true, subtree: true });
+
   // Login form
   document.getElementById('login-form').onsubmit = async (e) => {
     e.preventDefault();

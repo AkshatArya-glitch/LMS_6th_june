@@ -1,0 +1,423 @@
+You are working on my existing LMS website project. The project already has frontend pages, backend PHP files, admin panel, user panel, trainer panel, database files, CSS, JS, media gallery, footer, contact page, home page, and dashboard features.
+
+Do not redesign the website.
+Do not change the existing UI style unnecessarily.
+Do not remove existing features.
+Do not break login/register, admin/user/trainer dashboards, courses, gallery, footer, contact page, backend routes, or database connection.
+
+Your task is to fix the issues listed below using clean, minimal, targeted changes only.
+
+Project structure is roughly:
+
+* `LMS/Frontend/`
+* `LMS/Frontend/index.html` or home page file
+* `LMS/Frontend/login.php`
+* `LMS/Frontend/contact.html` or contact page file
+* `LMS/Frontend/admin/`
+* `LMS/Frontend/assets/css/`
+* `LMS/Frontend/assets/js/`
+* `LMS/Backend/`
+* `LMS/Backend/includes/`
+* `LMS/Backend/public/index.php`
+* SQL/migration files inside `LMS/Backend/`
+
+Before making changes, inspect the actual project files and apply fixes in the correct existing files. Do not create duplicate pages unless absolutely necessary.
+
+MAIN RULE:
+Fix all bugs and CSS issues mentioned below without unintended UI changes.
+
+1. FIX HOME HERO SECTION SLIDER ARROWS AND SLIDING FUNCTIONALITY
+
+Current problem:
+The home page hero section needs proper navigation arrows and the ability to slide between hero slides. The arrows should not overlap the hero text, buttons, or content. The slider must actually work.
+
+Requirements:
+
+* Inspect the existing home page hero section HTML, CSS, and JS.
+* Add or fix left and right navigation arrows for the hero slider.
+* Arrows must be clearly visible.
+* Arrows must be positioned safely on the left and right side of the hero section.
+* Arrows must not overlap:
+
+  * hero heading
+  * subtitle
+  * description
+  * call-to-action buttons
+  * images
+* Make sure clicking the right arrow moves to the next slide.
+* Make sure clicking the left arrow moves to the previous slide.
+* Slider should loop correctly:
+
+  * last slide → first slide
+  * first slide → last slide
+* If dots/indicators exist, keep them working.
+* If auto-slide already exists, keep it working or repair it.
+* If auto-slide does not exist, add a simple safe auto-slide only if it fits the current design.
+* Add keyboard-safe and accessible button labels:
+
+  * `aria-label="Previous slide"`
+  * `aria-label="Next slide"`
+* On mobile screens, arrows should become smaller or move to a safe position so they do not cover text.
+* Do not redesign the hero section.
+* Keep existing fonts, colors, spacing, images, buttons, and branding as much as possible.
+
+Expected result:
+The hero section should have working previous/next navigation arrows and users should be able to slide through hero slides smoothly.
+
+2. ADD ADMIN PANEL ABILITY TO MANAGE HERO SLIDES
+
+Current problem:
+The home hero slider should support adding and managing slides from the backend/admin panel.
+
+Requirements:
+
+* Check if a table or CMS system already exists for home page content or hero slides.
+* If an existing suitable table exists, reuse it.
+* If no suitable table exists, create a safe SQL migration file for hero slides.
+
+Suggested table if needed:
+
+```sql
+CREATE TABLE IF NOT EXISTS hero_slides (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    title VARCHAR(255) NOT NULL,
+    subtitle TEXT NULL,
+    description TEXT NULL,
+    button_text VARCHAR(100) NULL,
+    button_link VARCHAR(255) NULL,
+    image_path VARCHAR(255) NULL,
+    sort_order INT DEFAULT 0,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+Admin panel must allow:
+
+* View all hero slides.
+* Add new hero slide.
+* Edit existing hero slide.
+* Delete hero slide.
+* Activate/deactivate hero slide.
+* Upload/change hero image.
+* Change slide order.
+
+Backend requirements:
+
+* Use prepared statements.
+* Validate all inputs.
+* Only allow safe image uploads.
+* Allow only image formats like `.jpg`, `.jpeg`, `.png`, `.webp`.
+* Restrict upload size.
+* Store uploaded images in the correct existing uploads/assets folder.
+* Protect all hero slide management pages/routes with existing admin authentication.
+* Do not break existing admin panel routes.
+
+Frontend requirements:
+
+* Home page should load active slides from database/backend.
+* Slides should be ordered by:
+
+  * `sort_order ASC`
+  * then `id DESC`
+* If there are no active slides in the database, fallback to the current hardcoded hero content so the home page does not break.
+
+Expected result:
+Admin should be able to add/manage hero slides, and the home page hero slider should display those slides dynamically.
+
+3. FIX ADMIN PANEL MANAGE COURSES SECTION SPACING ISSUES
+
+Current problem:
+The admin panel, especially the Manage Courses section, has major spacing issues. Some text is wrapping badly or getting cut. Text that should remain on one line is breaking into multiple lines.
+
+Requirements:
+
+* Inspect the Manage Courses admin page and its CSS.
+* Fix spacing, width, table/card layout, and text alignment.
+* Text that should be one line must remain one line where appropriate.
+* Use CSS carefully, such as:
+
+  * `white-space: nowrap;`
+  * `text-overflow: ellipsis;`
+  * `overflow: hidden;`
+  * proper column widths
+  * proper table wrappers
+  * `overflow-x: auto;` for wide tables
+* Do not let content overflow outside the page.
+* Do not allow the page to get cut off horizontally.
+* Do not hide important action buttons.
+* Course titles, category names, status labels, prices, and action buttons should be aligned neatly.
+* Fix spacing between:
+
+  * page header
+  * filters/search
+  * table/cards
+  * action buttons
+  * sidebar and main content
+* Make sure Manage Courses works on desktop and laptop screen sizes.
+* Mobile responsiveness should not break badly.
+* Do not redesign the admin panel.
+* Keep the existing admin theme, colors, fonts, sidebar, and layout.
+
+Expected result:
+Manage Courses should look clean, properly spaced, and readable. Important text should stay in one line where needed, and the page should not be cut off.
+
+4. FIX GENERAL ADMIN PANEL CSS BUGS WITHOUT CHANGING UI
+
+Current problem:
+Some admin pages have spacing, dimensions, and icon loading issues.
+
+Requirements:
+
+* Inspect shared admin CSS and admin page layouts.
+* Fix pages that are slightly cut off.
+* Make sure main content is not hidden behind sidebar/header.
+* Make sure cards and tables stay inside the visible area.
+* Add proper responsive wrappers for tables.
+* Use `box-sizing: border-box;` globally if missing.
+* Fix admin sidebar/content width calculations.
+* Fix page padding and margins consistently.
+* Do not increase/decrease the entire dashboard zoom.
+* Do not remove admin sections.
+* Do not change backend functionality.
+* Fix icons that are not loading.
+* Check if icons use:
+
+  * Font Awesome
+  * Bootstrap Icons
+  * local SVG/icons
+  * CDN links
+* Fix broken icon paths or wrong icon class names.
+* If CDN is unreliable, use the project’s existing local icon assets or add a safe fallback.
+
+Expected result:
+Admin panel pages should not be cut off, spacing should be consistent, and icons should load correctly.
+
+5. MAKE WHATSAPP AND PHONE FLOATING ICONS CONSISTENT ON ALL PAGES
+
+Current problem:
+WhatsApp and phone floating buttons should appear with the same design and same size across all pages.
+
+Requirements:
+
+* Create or reuse one shared floating contact component.
+* Apply it consistently across public pages where appropriate:
+
+  * home page
+  * contact page
+  * courses page
+  * articles page
+  * certification page
+  * webinar page
+  * media gallery page
+  * other normal frontend pages
+* Do not place these floating buttons inside admin/user/trainer dashboards unless they are already intended to be there.
+* WhatsApp and phone icons must have:
+
+  * same size
+  * same circular shape
+  * same shadow style
+  * same spacing
+  * same hover animation
+  * same fixed position style
+* WhatsApp button should open:
+
+  * `https://wa.me/PHONE_NUMBER`
+* Phone button should open:
+
+  * `tel:PHONE_NUMBER`
+* Use the real phone number if it already exists in the project footer/contact page.
+* If the real number cannot be found, use a placeholder like `+919999999999` and add a clear comment to replace it.
+* Buttons should not cover important content.
+* On mobile, buttons should resize or reposition safely.
+* Add accessibility labels:
+
+  * `aria-label="Chat on WhatsApp"`
+  * `aria-label="Call us"`
+
+Expected result:
+WhatsApp and phone floating icons should look identical in design and size across all normal frontend pages.
+
+6. FIX MEDIA GALLERY PAGE CAPTIONS AND CATEGORY DISPLAY
+
+Current problem:
+When clicking Media Gallery in the footer, the gallery page opens. The pictures should not show captions or raw file names. However, each picture should have a category. Admin should be able to add pictures from backend admin panel.
+
+Requirements for frontend media gallery:
+
+* Inspect the existing media gallery page.
+* Remove all visible image captions.
+* Do not show raw file names like:
+
+  * `image1.jpg`
+  * `gallery_01.png`
+  * uploaded file names
+* Each gallery item should show category information only.
+* Category can appear as a badge/tag, for example:
+
+  * Event
+  * Classroom
+  * Workshop
+  * Certificate
+  * Seminar
+  * Training
+* Do not show unnecessary image titles or filenames.
+* Images should still open/view correctly if a lightbox or preview exists.
+* Keep existing gallery layout and design as much as possible.
+* Do not redesign the media gallery.
+
+Requirements for backend/admin media gallery management:
+
+* Check if an existing gallery/media table already exists.
+* If yes, reuse it and add only missing fields if necessary.
+* If no table exists, create a safe SQL migration file.
+
+Suggested table if needed:
+
+```sql
+CREATE TABLE IF NOT EXISTS media_gallery (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    image_path VARCHAR(255) NOT NULL,
+    category VARCHAR(100) NOT NULL,
+    alt_text VARCHAR(255) NULL,
+    sort_order INT DEFAULT 0,
+    is_active TINYINT(1) DEFAULT 1,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+```
+
+Admin panel must allow:
+
+* View gallery images.
+* Add new image.
+* Select/add category.
+* Edit image category.
+* Replace image.
+* Delete image.
+* Activate/deactivate image.
+* Change image order if possible.
+
+Upload requirements:
+
+* Allow only image files:
+
+  * `.jpg`
+  * `.jpeg`
+  * `.png`
+  * `.webp`
+* Restrict upload size.
+* Store uploaded files in the correct existing uploads/gallery or assets directory.
+* Create the upload directory if missing.
+* Use safe unique filenames.
+* Never display the raw uploaded filename on the frontend.
+* Use prepared statements for all database operations.
+* Protect gallery management with admin authentication.
+
+Expected result:
+Media Gallery page should display pictures with category tags only, no captions and no file names. Admin should be able to add/manage gallery pictures from the backend panel.
+
+7. CHANGE CONTACT PAGE AVG RESPONSE TIME TEXT FROM RED TO GREEN
+
+Current problem:
+On the contact page, the text or badge showing “Avg response time 24 hrs” is currently red. Change it to green.
+
+Requirements:
+
+* Find the contact page section containing:
+
+  * “Avg response time”
+  * “24 hrs”
+* Change only this text/badge/accent color from red to green.
+* Use a professional green color such as:
+
+  * `#16a34a`
+  * `#22c55e`
+  * or existing project green variable if available.
+* Do not change other red brand elements unless they belong only to this response-time badge.
+* Keep layout, font, icon, and spacing the same.
+
+Expected result:
+“Avg response time 24 hrs” should appear green instead of red.
+
+8. BUG FIXING AND CSS SAFETY CHECK
+
+After completing the above, inspect and fix any related bugs or CSS issues caused by these changes.
+
+Requirements:
+
+* Check browser console for JavaScript errors.
+* Check PHP syntax errors.
+* Check broken file paths.
+* Check image upload paths.
+* Check CSS conflicts.
+* Check responsive behavior.
+* Check database queries.
+* Check admin authentication protection.
+* Check that old content still works.
+* Do not introduce new UI changes outside the requested fixes.
+
+Testing checklist:
+Verify all of the following before finishing:
+
+Hero section:
+
+* Previous arrow appears.
+* Next arrow appears.
+* Arrows do not overlap hero text.
+* Clicking next changes slide.
+* Clicking previous changes slide.
+* Slider loops correctly.
+* Dynamic admin-added slides appear on home page.
+* Fallback hero content works if no slides exist.
+
+Admin Manage Courses:
+
+* Manage Courses page spacing is fixed.
+* Text that should stay in one line stays in one line.
+* Action buttons are aligned.
+* Table/card content is not cut off.
+* Page does not overflow badly.
+
+Floating contact buttons:
+
+* WhatsApp icon appears.
+* Phone icon appears.
+* Both have the same design and size.
+* They appear consistently on all normal frontend pages.
+* They work correctly.
+* They do not appear incorrectly inside admin/user/trainer dashboards unless intended.
+
+Media Gallery:
+
+* Footer Media Gallery link opens the gallery page.
+* Images display correctly.
+* No captions are shown.
+* No raw file names are visible.
+* Category is visible for each image.
+* Admin can add gallery image.
+* Admin can edit category.
+* Admin can delete/deactivate gallery image.
+* Upload validation works.
+
+Contact page:
+
+* “Avg response time 24 hrs” is green.
+* No unrelated contact page design changes.
+
+Admin panel:
+
+* Admin icons load correctly.
+* Pages are not cut off.
+* Sidebar/header layout remains stable.
+* No unrelated admin UI redesign.
+
+Deliverables:
+After completing the work, provide:
+
+1. List of files changed.
+2. List of database migration files added or modified.
+3. Steps to run the SQL migration in phpMyAdmin/XAMPP.
+4. Any placeholder phone number used.
+5. Confirmation that no unrelated UI or functionality was intentionally changed.

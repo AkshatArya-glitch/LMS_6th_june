@@ -65,18 +65,17 @@
   padding: 0.85rem;
 }
 
-.mg-card-body strong {
-  display: block;
-  color: var(--dark-900);
-  font-size: 0.92rem;
-  line-height: 1.35;
-}
-
-.mg-card-body small {
-  display: block;
-  margin-top: 0.35rem;
-  color: var(--gray-500);
-  font-size: 0.75rem;
+.mg-category {
+  display: inline-flex;
+  align-items: center;
+  min-height: 28px;
+  padding: 0.35rem 0.7rem;
+  border-radius: 999px;
+  color: #991b1b;
+  background: #fef2f2;
+  font-size: 0.76rem;
+  font-weight: 800;
+  line-height: 1;
 }
 
 .mg-empty {

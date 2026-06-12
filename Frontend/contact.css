@@ -240,26 +240,25 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: var(--red-50);
-  border: 2px solid var(--red-200);
+  background: #f0fdf4;
+  border: 2px solid #bbf7d0;
   border-radius: var(--radius-md);
   padding: 0.75rem 1rem;
   min-width: max-content;
 }
 
 .contact-badge-icon {
-  color: var(--red-600);
+  color: #16a34a;
   flex-shrink: 0;
   display: inline-flex;
   align-items: center;
   justify-content: center;
   width: 20px;
   height: 20px;
-  border: 2px solid var(--red-600);
+  border: 2px solid #16a34a;
   border-radius: 50%;
   font-size: 12px;
   font-weight: 700;
-  color: var(--red-600);
 }
 
 .contact-badge-label {
@@ -270,7 +269,7 @@
 .contact-badge-value {
   font-size: var(--fs-xs);
   font-weight: 700;
-  color: var(--red-600);
+  color: #16a34a;
 }
 
 .contact-form-description {

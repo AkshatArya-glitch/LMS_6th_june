@@ -87,7 +87,7 @@ $csrfToken = auth_csrf_token();
 
         <button class="otp-button" id="otp-login-button" type="button">
           <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 4 6v5c0 5.2 3.2 8.2 8 10 4.8-1.8 8-4.8 8-10V6z"/><path d="m9 12 2 2 4-5"/></svg>
-          Login with OTP
+          <span>Login with OTP</span>
         </button>
 
         <div class="secure-box">
@@ -146,4 +146,3 @@ $csrfToken = auth_csrf_token();
   <script src="assets/js/auth.js"></script>
 </body>
 </html>
-
